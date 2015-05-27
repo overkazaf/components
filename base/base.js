@@ -19,6 +19,48 @@ function byClass(sClass, oParent){
     return aResult;
 }
 
+function byTag (tagName, oParent){
+	oParent = oParent || document;
+	return oParent.getElementsByTagName(tagName);
+}
+
+function isArray(elems){
+	return Object.prototype.toString.call(elems) === '[object Array]';
+}
+
+function isArrayLike (o) {
+	if (o &&                                // o is not null, undefined, etc.
+        typeof o === 'object' &&            // o is an object
+        isFinite(o.length) &&               // o.length is a finite number
+        o.length >= 0 &&                    // o.length is non-negative
+        o.length===Math.floor(o.length) &&  // o.length is an integer
+        o.length < 4294967296)              // o.length < 2^32
+        return true;                        // Then o is array-like
+    else
+        return false; 
+}
+
+function forEach(elems, callback){
+	if (isArray(elems)){
+		for (var i=0,l=elems.length; i<l; i++) {
+			callback.call(elems, i, elems[i]);
+		}
+	} else if (isArrayLike(elems)) {
+		for (var attr in elems) {
+			callback.call(elems, attr, elems[attr]);
+		}
+	}
+}
+
+
+function slideToggle (obj) {
+	var tarH = css(obj, 'height');
+	if (tarH === 0) {
+		buffer(obj, {'height': 400});
+	} else {
+		buffer(obj, {'height': 0});
+	}
+}
 function css(obj, attr, val){
 	if (arguments.length == 2) {
 		return parseFloat(obj.currentStyle ? obj.currentStyle[attr] : document.defaultView.getComputedStyle(obj, null)[attr]);
@@ -83,26 +125,26 @@ function buffer (obj, json, fnDuring, fnEnd){
 
 }
 
-function flex (obj, json, fnDuring, fnEnd){
-	if(!obj.oSpeed)obj.oSpeed = {};
+// function flex (obj, json, fnDuring, fnEnd){
+// 	if(!obj.oSpeed)obj.oSpeed = {};
 
-	obj.timer = setInterval(function (){
-		var isEnd = true,
-			maxSpeed = 65;
-		for (var attr in json) {
-			if(!obj.oSpeed[attr])obj.oSpeed[attr] = 0;
+// 	obj.timer = setInterval(function (){
+// 		var isEnd = true,
+// 			maxSpeed = 65;
+// 		for (var attr in json) {
+// 			if(!obj.oSpeed[attr])obj.oSpeed[attr] = 0;
 			
 
-			if (obj.oSpeed[attr])
-		}
+// 			if (obj.oSpeed[attr])
+// 		}
 
-		if (isEnd){
-			clearInterval(obj.timer);
-			obj.timer = null;
-			fnEnd && fnEnd.call(obj);
-		}
-	}, 50);
-}
+// 		if (isEnd){
+// 			clearInterval(obj.timer);
+// 			obj.timer = null;
+// 			fnEnd && fnEnd.call(obj);
+// 		}
+// 	}, 50);
+// }
 
 window.debug = true;
 function log (k, v) {
