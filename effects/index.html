@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		ul {list-style-type:none;margin:0;padding:0;}
+		li {float:left;}
+		#nav1{
+			position: absolute;
+			width:90%;margin:0 auto;
+			height:64px;background-color:#eef;opacity:0.7;
+		}
+		ul.nav-list{}
+		ul.nav-list li.nav-list-item{width:120px;text-align: center;color:#222;line-height: 64px;cursor:pointer;}
+		.cursor {width:124px;height:68px;left:0px;top:-2px;position:absolute;background:#96f;cursor:pointer;z-index:-1;}
+	</style>
+</head>
+<body>
+	<div id="nav1">
+		<div class="cursor"></div>
+		<ul class="nav-list">
+			<li class="nav-list-item">Nav1</li>
+			<li class="nav-list-item">Nav2</li>
+			<li class="nav-list-item">Nav3</li>
+			<li class="nav-list-item">Nav4</li>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript" src="../base/base.js"></script>
+<script type="text/javascript" src="js/nav.js"></script>
+<script type="text/javascript">
+	window.onload = function (){
+		var oNav = byId('nav1'),
+			aLi = byClass('nav-list-item', oNav),
+			oCursor = byClass('cursor', oNav)[0],
+			originLeft = css(oCursor, 'left');
+		
+		for (var i=0,l=aLi.length; i<l; i++) {
+			(function(c){
+				var oW = css(aLi[0], 'width');
+				aLi[c].onmouseover = function (){
+					buffer(oCursor, {left : c * oW});
+				};
+				aLi[c].onmouseout = function (){
+					buffer(oCursor, {left : originLeft});
+				};
+			})(i);
+		}
+	};
+
+</script>
+</html>
