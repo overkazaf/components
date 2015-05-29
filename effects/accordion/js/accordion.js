@@ -1,4 +1,4 @@
-(function (){
+(function (window){
 	var oMenu = byId('menu');
 	var aLi = byClass('menu-list-item', oMenu);
 	for (var i=0,l=aLi.length; i<l; i++) {
@@ -12,5 +12,17 @@
 		})(i);
 	};
 
-	function accodion () {};
-})();
+	function accordion () {
+		return new _accordion.init(arguments);
+	};
+
+	function _accordion () {
+		return {
+			init : function (opt){
+				var co = cloneObject(opt,false);
+			}
+		};
+	}
+
+	window.accodion = accordion;
+})(window);
