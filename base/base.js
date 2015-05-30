@@ -130,11 +130,38 @@ function attr (elem, name, value) {
 	return elem[name] || elem.getAttribute(name) || '';
  }
 
-
-
  function create(elem){
  	return document.createElement(elem);
  }
+
+/* recursivlly empty children nodes under a given parent node */
+ function empty (parentNode) {
+ 	while (parentNode.firstChild) {
+ 		remove(parentNode.firstChild);
+ 	}
+ }
+
+ function remove (node){
+ 	if (node) node.parentNode.removeChild(node);
+ }
+
+
+ function stopBubble (e){
+ 	if (e && e.stopPropagation) {
+ 		e.stopPropagation();
+ 	} else {
+ 		window.event.cancelBubble = true;
+ 	}
+ }
+
+function preventDefault (e) {
+	if (e && e.preventDefault) {
+		e.preventDefault();
+	} else {
+		window.event.returnValue = false;
+	}
+	return false;
+}
 
 function isArray(elems){
 	return Object.prototype.toString.call(elems) === '[object Array]';
