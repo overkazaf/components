@@ -85,6 +85,67 @@ function domReady (f){
 	}
 }
 
+function addEvent (elem, type, handler) {
+	if (!isFunction(handler)) {
+		return;
+	}
+	if (!handler.$$guid) handler.$$guid = addEvent.guid++;
+	if (!elem.events) elem.events = {};
+
+	var handlers = elem.events[type];
+
+	if (!handlers) {
+		handlers = elem.events[type] = {};
+
+		if (elem['on' + type]) {
+			handlers[0] = elem['on' + type];
+		}
+	}
+
+	handlers[handler.$$guid] = handler;
+	elem['on' + type] = handleEvent;
+}
+
+addEvent.guid = 1;
+
+function removeEvent(elem, type, handler){
+	if (elem.events && elem.events[type]) {
+		delete elem.events[type][handler.$$guid];
+	}
+}
+
+function handleEvent(event){
+	var retVal = true;
+
+	event = event || fixEvent(window.event);
+	var handlers = this.events[event.type];
+
+	for (var i in handlers) {
+		this.$$handleEvent = handlers[i];
+
+		if (this.$$handleEvent(event) === false) {
+			retVal = false;
+		}
+	}
+
+	return retVal;
+}
+
+function fixEvent (event) {
+	event.preventDefault = fixEvent.preventDefault;
+	event.stopPropagation = fixEvent.stopPropagation;
+	return event;
+}
+
+fixEvent.preventDefault = function (){
+	this.returnValue = false;
+}
+
+fixEvent.stopPropagation = function (){
+	this.cancelBubble = true;
+}
+
+
 function isDomReady () {
 	if (domReady.done) return false;
 
@@ -98,6 +159,10 @@ function isDomReady () {
 	} 
 }
 
+
+function isFunction (fn){
+	return Object.prototype.toString.call(fn) === '[object Function]'
+}
 
 /* search text */
 
@@ -130,8 +195,20 @@ function attr (elem, name, value) {
 	return elem[name] || elem.getAttribute(name) || '';
  }
 
- function create(elem){
- 	return document.createElement(elem);
+ function create(elem, sClass){
+ 	var el = document.createElement(elem);
+ 	if(sClass){
+ 		el.className = sClass;
+ 	}
+ 	return el;
+ }
+
+ function appendElem (elem, oParent, sClass) {
+ 	return oParent.appendChild(create(elem, sClass));
+ }
+
+ function html (elem, h) {
+ 	elem.innerHTML = h;
  }
 
 /* recursivlly empty children nodes under a given parent node */
@@ -183,6 +260,7 @@ function isArrayLike (o) {
 function forEach(elems, callback){
 	if (elems) {
 		if (isArray(elems)){
+			
 			for (var i=0,l=elems.length; i<l; i++) {
 				callback.call(elems, i, elems[i]);
 			}
@@ -270,7 +348,26 @@ function buffer (obj, json, fnDuring, fnEnd){
 			fnEnd && fnEnd.call(obj);
 		}
 	}, 20);
+}
 
+function addClass (elem, sClass) {
+	var cls = elem.className;
+	if (cls) {
+		sClass = cls + ' ' + sClass;
+	}
+	elem.className = sClass;
+}
+
+function filteredByClass (arr, sClass) {
+	var ret = [];
+	for (var i=0; i<arr.length; i++) {
+		var s = arr[i].className;
+		if (s && s.indexOf(sClass) >= 0) {
+			ret.push(arr[i]);
+		}
+	}
+
+	return ret;
 }
 
 // function flex (obj, json, fnDuring, fnEnd){
