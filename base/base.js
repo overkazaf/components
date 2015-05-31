@@ -110,7 +110,11 @@ addEvent.guid = 1;
 
 function removeEvent(elem, type, handler){
 	if (elem.events && elem.events[type]) {
-		delete elem.events[type][handler.$$guid];
+		if (handler && handler.$$guid){
+			delete elem.events[type][handler.$$guid];
+		} else {
+			elem.events[type] = {};
+		}
 	}
 }
 

@@ -20,8 +20,8 @@
 
 			init: function(options) {
 				this.id = options.id || 'test';
-				this.width = options.width || 490;
-				this.height = options.height || 420;
+				this.width = options.width || 350;
+				this.height = options.height || 300;
 				this.obj = byId(options.id);
 				opt = options || {};
 				aDivs = this.generateDayBlocks(this.width, this.height, this.calcDate);
@@ -33,10 +33,22 @@
 					iW = w / 7,
 					iH = h / 6,
 					container = this.obj,
+					header = appendElem('div', container, 'calender-header'),
+					prevBtn = appendElem('div', header, 'prev'),
+					nextBtn = appendElem('div', header, 'next'),
+					dateText = appendElem('span', header, 'today'),
+					body = appendElem('div', container, 'calender-body'),
 					divs = [];
+
+				this.header = header;
+				this.body = body;
+				this.prevBtn = prevBtn;
+				this.nextBtn = nextBtn;
+				this.dateText = dateText;
+
 				for (var i = 0, k = 0; i < r; i++) {
 					for (var j = 0; j < c; j++) {
-						var div = appendElem('div', container, 'day');
+						var div = appendElem('div', body, 'day');
 						css(div, 'width', iW);
 						css(div, 'height', iH);
 						div.setAttribute('data-index', k++);
@@ -45,14 +57,16 @@
 				}
 				aDivs = divs;
 				callback && callback.call(this);
+				return aDivs;
 			},
-			calcDate: function() {
+			calcDate: function(d) {
 				var divs = this.divs;
-				var date = getJsonDate(new Date());
+				var date = getJsonDate((d && new Date(d)) || new Date());
 				
 				this.year = date['year'],
 				this.month = date['month'],
 				this.day = date['day'];
+
 
 				this.weekDay = getWeekDay(this.year, this.month, this.day);
 				this.firstDate = getWeekDay(this.year, this.month, 1);
@@ -60,39 +74,112 @@
             	this.finalDate = new Date(this.year, this.month+1, 0).getDate();
             	this.lastDate = new Date(this.year, this.month, 0).getDate();
 				this.render();
-				
 			},
 			render: function() {
+				forEach(aDivs, function (index, div){
+					div.className = 'day';
+				});
+
+				this.dateText.innerText = '' + (this.year) + '/' + (this.month);
+
+				var prevMonth = this.month-1,
+					prevYear = this.year,
+					nextMonth = this.month+1,
+					nextYear = this.year;
+
+				if(this.month == 1){
+					prevMonth = 12;
+					prevYear -= 1;
+				} else if (this.month == 12) {
+					nextMonth = 1;
+					nextYear += 1;
+				}
+
+				this.prevMonth = prevMonth;
+				this.prevYear = prevYear;
+				this.nextMonth = nextMonth;
+				this.nextYear = nextYear;
 
 				// render previous month
-				for (var i=this.firstDate-1,k=0; i>=0; i--) {
-					aDivs[i].innerHTML = this.finalDate - k++;
+				for (var i=this.firstDate-1,k=0; i>=0; i--, k++) {
+					aDivs[i].innerText = this.finalDate - k;
+					aDivs[i].setAttribute('data-date', prevYear + '-' + prevMonth + '-' + (this.finalDate - k));
 					addClass(aDivs[i], 'prev-month');
 				}
 				// render current month
-				for (var i=this.firstDate, tot = 0; tot<=this.finalDate; i++) {
-					aDivs[i].innerHTML = ++tot;
+				for (var i=this.firstDate, tot = 0; tot<this.lastDate; i++) {
+					aDivs[i].innerText = ++tot;
+					
+					aDivs[i].setAttribute('data-date', this.year + '-' + this.month + '-' + tot);
 					addClass(aDivs[i], 'this-month');
 				}
 
 				// render next month
-				for (j=i; j<42; j++) {
-					aDivs[j].innerHTML = j-i + 1;
+				for (var j=i, k; j<42; j++) {
+					k = j-i + 1;
+					aDivs[j].innerText = k;
+					aDivs[j].setAttribute('data-date', nextYear + '-' + nextMonth + '-' + k);
 					addClass(aDivs[j], 'next-month');
 				}
 
 				this.bindEvent();
 			},
 			bindEvent : function (){
+				this.prevDays = filteredByClass(aDivs, 'prev-month');
+				this.nextDays = filteredByClass(aDivs, 'next-month');
 				this.thisDays = filteredByClass(aDivs, 'this-month');
-				forEach(this.thisDays, function (i, elem){
+
+				var _this = this;
+				forEach(_this.thisDays, function (i, elem){
 					addEvent(elem, 'click', function(){
+						var d = elem.getAttribute('data-date');
 						opt && opt['OnClick'] && isFunction(opt['OnClick']) && opt['OnClick'].call(elem);
 					});
-					addEvent(elem, 'dblclick', function(ev){
-						opt && opt['OnDblClick'] && isFunction(opt['OnDblClick']) && opt['OnDblClick'].call(elem);
+				});
+
+				
+				forEach(_this.prevDays, function (i, elem){
+					addEvent(elem, 'click', function(){
+						var d = elem.getAttribute('data-date');
+						var firstDay = getFirstDate(d);
+						_this.refresh(firstDay);
 					});
 				});
+
+				forEach(_this.nextDays, function (i, elem){
+					addEvent(elem, 'click', function(){
+						var d = elem.getAttribute('data-date');
+						var firstDay = getFirstDate(d);
+						_this.refresh(firstDay);
+					});
+				});
+
+				addEvent(_this.prevBtn, 'click', function (){
+					var firstDay =_this.prevYear + '-' + _this.prevMonth + '-1';
+					
+					_this.refresh(new Date(firstDay));
+				});
+
+				addEvent(_this.nextBtn, 'click', function (){
+					var d = new Date(_this.nextYear, _this.nextMonth-1, 1);
+					var firstDay = getFirstDate(d);
+					_this.refresh(firstDay);
+				});
+			},
+			refresh : function (d){
+				this.clear(this.calcDate(d));
+			},
+			clear : function (callback){
+				if (aDivs){
+					if (aDivs.length){
+						forEach(aDivs, function (i, div){
+							removeEvent(div, 'click');
+						});
+						callback && callback.call(this);
+					}
+				} else {
+					aDivs = this.generateDayBlocks(this.width, this.height, this.calcDate);
+				}
 			}
 		};
 	}
@@ -118,6 +205,16 @@
 		};
 	}
 
+	function formatDate(d){
+		var oDate = getJsonDate(d);
+		return oDate['year'] + '/' + oDate['month'] + '/' + oDate['day'];
+ 	}
+	function getFirstDate (d) {
+		
+		var arr = d.toString().split('-');
+		arr[2] = '1';
+		return arr.join('-');
+	}
 	function getWeekDay(y, m, d) {
 
 		if (m == 1) {
