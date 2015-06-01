@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.ui-panel{
+			position: absolute;top:0;left:0;
+			width:400px;height:240px;border:1px solid #000;box-shadow: 0 2px 10px #aaa;
+		}
+		.ui-panel-header{
+			cursor:move;
+			z-index:1;position: absolute;left: 0;top: 0;width:100%;
+			height:32px;font-size:12px;line-height: 32px;background-color: #09F;text-align: center;color:#FFF;
+			opacity: 0.7;
+		}
+		.ui-panel-header .ui-ctrl-min,
+		.ui-panel-header .ui-ctrl-revert,
+		.ui-panel-header .ui-ctrl-close{
+			position: absolute;right: 32px;top:0;width:32px;height:32px;background-color: #FFF;cursor: pointer;
+		}
+		.ui-panel-header .ui-ctrl-revert{right:64px;background-color: #ccc;}
+		.ui-panel-header .ui-ctrl-close{right:0;background-color: #F00;}
+
+		.ui-panel:hover .ui-panel-header{opacity: 1;}
+		.ui-panel-body{background-color:#2b2b2b;position:relative;height: 100%;width:100%;opacity: 0.9;}
+		.ui-ctrl-e{
+			position: absolute;right:-5px;top:0;width:10px;
+			height:100%;background-color: transparent;
+			cursor : e-resize;
+		}
+
+		.ui-ctrl-s{
+			position: absolute;left:0;bottom:-5px;width:100%;
+			height:10px;background-color: transparent;
+			cursor : s-resize;
+		}
+		
+		.ui-ctrl-se{
+			position: absolute;right:-10px;bottom:-10px;width:20px;
+			height:20px;background-color: transparent;
+			cursor : se-resize;
+		}
+		.container{
+			position: relative;left:100px;top: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		
+	</div>
+</body>
+<script type="text/javascript">
+	function buildPanel (context, panelId, callback) {
+		context = context || document.body;
+		var fragment = document.createDocumentFragment();
+		var oPanel = document.createElement('div');
+		var oHeader = document.createElement('div');
+		var oBody = document.createElement('div');
+
+		//minimize btn
+		var oMini = document.createElement('div');
+		var oRevert = document.createElement('div');
+		var oClose = document.createElement('div');
+
+		oPanel.className = 'ui-panel';
+		oPanel.id = panelId;
+		oHeader.className = 'ui-panel-header';
+		oBody.className = 'ui-panel-body';
+		oHeader.innerHTML = 'Panel title';
+		oMini.className = 'ui-ctrl-min';
+		oRevert.className = 'ui-ctrl-revert';
+		oClose.className = 'ui-ctrl-close';
+
+		oHeader.appendChild(oMini);
+		oHeader.appendChild(oRevert);
+		oHeader.appendChild(oClose);
+
+		oPanel.appendChild(oHeader);
+		oPanel.appendChild(oBody);
+		fragment.appendChild(oPanel);
+
+		if (callback && typeof callback == 'function') {
+			context.appendChild(fragment);
+			callback();
+		} else {
+			return context.appendChild(fragment);
+		}
+	}
+	
+	$globalIndex = 0;
+	panelList = [];
+	
+	window.onload = function (){
+		
+		var ctx = document.getElementsByClassName('container')[0];
+		for (var i=1; i<10; i++) {
+			var panelId = 'test'+ i;
+			buildPanel(ctx, panelId, function (){
+				var r = new Resizable('init', {
+					panelId : panelId,
+					minx : 120,
+					miny : 60,
+					draggable : true,
+					minDx : 10,
+					minDy : 10
+				});
+				r.instance.style.zIndex = ++$globalIndex;
+				panelList[panelList.length] = r;
+			});
+		}
+	}
+
+	function Resizable(method, options, fn){
+		if (this[method]) {
+			this[method](options);
+		} else {
+			this.prototype[method] = fn;
+		}
+
+		return this;
+	}
+
+	Resizable.prototype = {
+		constructor : Resizable,
+		instance : null,
+		header : null,
+		body : null,
+		footer : null,
+		ctrl : null,
+		init : function (opts){
+			var instance = document.getElementById(opts.panelId);
+			var header = instance.getElementsByClassName('ui-panel-header')[0];
+			var body = instance.getElementsByClassName('ui-panel-body')[0];
+			var footer = instance.getElementsByClassName('ui-panel-footer')[0];
+
+			var ctrlE = document.createElement('div');
+			var ctrlS = document.createElement('div');
+			var ctrlSE = document.createElement('div');
+			header.class = 'ui-panel-header';
+			ctrlE.class = ctrlE.className = 'ui-ctrl-e';
+			ctrlS.class = ctrlS.className = 'ui-ctrl-s';
+			ctrlSE.class = ctrlSE.className = 'ui-ctrl-se';
+
+			instance.appendChild(ctrlE);
+			instance.appendChild(ctrlS);
+			instance.appendChild(ctrlSE);
+
+			this.instance = instance;
+			this.header = header;
+			this.body = body;
+			this.footer = footer;
+			this.ctrl = {
+				E : ctrlE,
+				S : ctrlS,
+				SE: ctrlSE
+			};
+			this.minx = opts.minx || 0;
+			this.miny = opts.miny || 0;
+			this.bindEvent(opts);
+		},
+		bindEvent : function (opts){
+			var ctrl = this.ctrl;
+			var obj = this.instance;
+			var header = this.header;
+			var oMini = header.getElementsByClassName('ui-ctrl-min')[0];
+			var oRevert = header.getElementsByClassName('ui-ctrl-revert')[0];
+			var oClose = header.getElementsByClassName('ui-ctrl-close')[0];
+			var minx = this.minx;
+			var miny = this.miny;
+
+			// Resizable & Draggable
+			header.onmousedown = ctrl.SE.onmousedown = ctrl.S.onmousedown = ctrl.E.onmousedown = function (ev){
+				ev = fixEvent(ev);
+				if (obj.style.zIndex < $globalIndex){
+					obj.style.zIndex = ++$globalIndex;
+				}
+				var pOL = 0,
+					pOT = 0,
+					p = obj;
+				while (p && p!= obj) {
+					pOL += p.offsetLeft;
+					pOT += p.offsetTop;
+					p = p.offsetParent;
+				}
+				var disX = ev.pageX - pOL - obj.offsetWidth;
+				var disY = ev.pageY - pOT - obj.offsetHeight;
+				var type = ev.target.class;
+				if (type == 'ui-panel-header') {
+					disX = ev.pageX - obj.offsetLeft;
+					disY = ev.pageY - obj.offsetTop;
+				}
+				document.onmousemove = function (ev){
+					ev = fixEvent(ev);
+					var tx = ev.pageX - disX;
+					var ty = ev.pageY - disY;
+					if (type == 'ui-panel-header') {
+						tx = ev.pageX - disX;
+						ty = ev.pageY - disY;
+					} else {
+						tx = Math.max(tx, minx);
+						ty = Math.max(ty, miny);
+					}
+					switch (type) {
+						case 'ui-ctrl-e': 
+							ctrl.E.style.left = tx +  'px';
+							ctrl.SE.style.left = tx - 5 + 'px';
+							obj.style.width = tx + 5 + 'px';
+							break;
+						case 'ui-ctrl-s':
+							ctrl.S.style.top = ty +  'px';
+							ctrl.SE.style.top = ty - 5 +  'px';
+							obj.style.height = ty + 5 + 'px';
+							break;
+						case 'ui-ctrl-se':
+							ctrl.E.style.left = tx - 5 +  'px';
+							ctrl.S.style.top = ty - 5 + 'px';
+							ctrl.SE.style.left = tx -10 +  'px';
+							ctrl.SE.style.top = ty -10+  'px';
+							obj.style.width = tx  + 'px';
+							obj.style.height = ty  + 'px';
+							break;
+
+						//draggable
+						case 'ui-panel-header':
+							obj.style.left = tx + 'px';
+							obj.style.top = ty + 'px';
+							break;
+					}
+				}
+
+				document.onmouseup = function (){
+					document.onmousemove = null;
+					document.onmouseup = null;
+				}
+
+				return false;		
+			}
+
+			oMini.onclick = function (){
+				obj.hisWidth = css(obj,'width');
+				obj.hisHeight = css(obj,'height');
+				obj.timer = setInterval(function (){
+					buffer(obj, {height: 32, width:280}, function (){
+						ctrl.E.style.left = '275px';
+						ctrl.S.style.top = '27px';
+						ctrl.SE.style.left = '270px';
+						ctrl.SE.style.top = '22px';
+					});
+				});
+			}
+
+			oRevert.onclick = function (){
+				obj.timer = setInterval(function (){
+					buffer(obj, {height: 240, width:400}, function (){
+						ctrl.E.style.left = '395px';
+						ctrl.S.style.top = '235px';
+						ctrl.SE.style.left = '390px';
+						ctrl.SE.style.top = '230px';
+					});
+				});
+			}
+
+			oClose.onclick = function (){
+				var id = obj.id,
+					p = -1;
+				for (var i=0,l=panelList.length; i<l; i++){
+					if (panelList[i].instance.id == id) {
+						p = i;
+						break;
+					}
+				}
+				if (p != -1){
+					panelList.splice(p, 1);
+					var o = document.getElementById(id);
+					o.parentNode.removeChild(o);
+				}
+			}
+			// if (opts.Draggable) {
+			// 	header.onmousedown = function (ev){
+			// 		ev = fixEvent(ev);
+			// 		var pOL = 0,
+			// 			pOT = 0,
+			// 			p = obj;
+			// 		while (p && p!= obj) {
+			// 			pOL += p.offsetLeft;
+			// 			pOT += p.offsetTop;
+			// 			p = p.offsetParent;
+			// 		}
+			// 		var disX = ev.pageX - pOL - obj.offsetWidth;
+			// 		var disY = ev.pageY - pOT - obj.offsetHeight;
+			// 		var type = ev.target.class;
+			// 	}
+			// }
+		}
+	};
+
+	function css (obj, attr, value) {
+		if (arguments.length == 2) {
+			return parseFloat(obj.currentStyle ? obj.currentStyle[atr] : document.defaultView.getComputedStyle(obj, '')[attr]);
+		} else {
+			switch (attr) {
+				case 'width':
+				case 'height':
+				case 'paddingLeft':
+				case 'paddingTop':
+				case 'paddingRight':
+				case 'paddingBottom':
+					value=Math.max(value,0);
+				case 'left':
+				case 'top':
+				case 'marginLeft':
+				case 'marginTop':
+				case 'marginRight':
+				case 'marginBottom':
+					obj.style[attr]=value+'px';
+					break;
+				case 'opacity':
+					obj.style.opacity = value;
+					obj.style.filter = "alpha(opacity:"+(value*100)+")";
+					break;
+				default : 
+					obj.style[attr] = value + 'px';
+					break;
+			}
+		}
+		return function(attr_in, attr_val){css(obj,attr_in, attr_val);};
+	}
+	function flex (obj, json, fnDuring, fnCallback) {
+		var bStop = true;
+		var speed = 0;
+		var cur = 0;
+		
+		for (var attr in json) {
+			cur = css(obj, attr);
+			if(!obj.oSpeed)obj.oSpeed = {};
+			if(!obj.oSpeed[attr])obj.oSpeed[attr] = 0;
+			if (Math.abs(json[attr]-cur)>1 || Math.abs(obj.oSpeed[attr])>1) {
+				bStop = false;
+
+				obj.oSpeed[attr] += (json[attr] - cur) / 5;
+				obj.oSpeed[attr] *= 0.85;
+				
+				var maxSpeed = 65;
+				if(Math.abs(obj.oSpeed[attr])>maxSpeed)
+				{
+					obj.oSpeed[attr]=obj.oSpeed[attr]>0?maxSpeed:-maxSpeed;
+				}
+
+				css(obj, attr, cur+obj.oSpeed[attr]);
+			}
+		}
+
+		if(fnDuring && typeof fnDuring === 'function'){
+			fnDuring.call(obj);
+		}
+
+		if (bStop) {
+			clearInterval(obj.timer);
+			obj.timer = null;
+
+			if (fnCallback && typeof fnCallback === 'function') {
+				fnCallback.call(obj);
+			}
+		}
+	}
+
+	function buffer(obj, json, fnCallBack, fnDuring)
+	{
+		var bStop=true;
+		var attr='';
+		var speed=0;
+		var cur=0;
+		
+		for(attr in json)
+		{
+			cur=css(obj, attr);
+			if(json[attr]!=cur)
+			{
+				bStop=false;
+				
+				speed=(json[attr]-cur)/5;
+				speed=speed>0?Math.ceil(speed):Math.floor(speed);
+				
+				css(obj, attr, cur+speed);
+			}
+		}
+		
+		if(fnDuring)fnDuring.call(obj);
+		
+		if(bStop)
+		{
+			clearInterval(obj.timer);
+			obj.timer=null;
+			
+			if(fnCallBack)fnCallBack.call(obj);
+		}
+	}
+	function log(k,v){console.log(k,v);};
+	function fixEvent(ev){return ev || window.event;}
+</script>
+</html>

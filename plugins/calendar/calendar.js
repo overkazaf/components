@@ -63,6 +63,7 @@
 				var divs = this.divs;
 				var date = getJsonDate((d && new Date(d)) || new Date());
 				
+				this.date = date;
 				this.year = date['year'],
 				this.month = date['month'],
 				this.day = date['day'];

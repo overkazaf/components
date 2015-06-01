@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		#div1{width:600px;height:100px;background:#eef;position: relative;margin: 100px auto;overflow: hidden;padding:10px 0 10px 0;box-shadow: 0 0 4px;border:1px solid #AAA;}
+		#div1 ul{width:100%;height:auto;margin:0;padding:0;}
+		#div1 ul li{box-shadow:0 0 3px #000;float:left;list-style: none;width:100px;height:100px;margin-left: 14px;background: #aaa;}
+	</style>
+</head>
+<body>
+	<div id="div1">
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+			<li>7</li>
+			<li>8</li>
+			<li>9</li>
+			<li>10</li>
+		</ul>
+	</div>
+	<input type="button" id="btn1" value="move" />
+	<input type="button" id="btn2" value="move" />
+</body>
+<script type="text/javascript" src="flex.js"></script>
+<script type="text/javascript">
+	var ANIMATE_TYPE = {
+		BUFFER : 2,
+		FLEX : 1
+	}
+	var timer;
+	window.onload = function (){
+		var oDiv = document.getElementById('div1');
+		var oUl = oDiv.getElementsByTagName('ul')[0];
+		var aLi = oUl.getElementsByTagName('li');
+		var oBtn1 = document.getElementById('btn1');
+		var oBtn2 = document.getElementById('btn2');
+		var aPos = [];
+		for (var i=0,len=aLi.length;i<len;i++) {
+			aPos[i] = aLi[i].offsetLeft;
+		}
+		for (var i=0,len=aLi.length;i<len;i++) {
+			aLi[i].style.position='absolute';
+			aLi[i].style.left=aPos[i] + 'px';
+		}
+
+		oBtn1.onclick = btnHandler1;
+		oBtn2.onclick = btnHandler2;
+		var ready = true;
+		function btnHandler1 () {
+			var currentIndex = 0;
+			clearTimeout(timer);
+			oBtn1.onclick=null;
+			oBtn2.onclick=null;
+			function next(){
+				if (currentIndex < aLi.length / 2){
+					animate(aLi[currentIndex], {left:900}, ANIMATE_TYPE.BUFFER,null,null);
+					timer = setTimeout(next,100);
+					currentIndex++;
+				} else {
+					timer = setTimeout(next2,150);
+				}
+			}
+
+			function next2(){
+				if (currentIndex < aLi.length) {
+					animate(aLi[currentIndex], {left:aPos[currentIndex]}, ANIMATE_TYPE.FLEX,null,null);
+					timer = setTimeout(next2,150);
+					currentIndex++;
+				} else {
+					if (currentIndex == aLi.length) {
+						oBtn1.onclick=btnHandler1;
+						oBtn2.onclick=btnHandler2;
+					}
+				}
+			}
+			next();
+		}
+		function btnHandler2(){
+			var currentIndex = aLi.length-1;
+			clearTimeout(timer);
+			oBtn1.onclick=null;
+			oBtn2.onclick=null;
+			function next(){
+				if (currentIndex >= aLi.length / 2){
+					animate(aLi[currentIndex], {left:900}, 2,null,null);
+					timer = setTimeout(next,100);
+					currentIndex--;
+				} else {
+					timer = setTimeout(next2,150);
+				}
+			}
+
+			function next2(){
+				if (currentIndex >= 0) {
+					animate(aLi[currentIndex], {left:aPos[currentIndex]}, 2,null,null);
+					timer = setTimeout(next2,150);
+					currentIndex--;
+				}else {
+					if (currentIndex == -1) {
+						oBtn1.onclick=btnHandler1;
+						oBtn2.onclick=btnHandler2;
+					}
+				}
+			}
+			next();
+		}
+
+		oBtn1.click();
+	}
+
+</script>
+</html>

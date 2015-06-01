@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		ul {list-style-type:none;margin:0;padding:0;}
+		li {float:left;}
+		#nav1{
+			position: absolute;
+			width:90%;margin:0 auto;
+			height:34px;background-color:#f40;border-radius:3px;opacity:0.7;
+		}
+		ul.nav-list li.nav-list-item{width:120px;text-align: center;color:#222;line-height:34px;cursor:pointer;}
+		.cursor {width:124px;height:38px;left:0px;top:-2px;position:absolute;background:#09f;cursor:pointer;z-index:-1;font-weight:bold;}
+	</style>
+</head>
+<body>
+	<div id="nav1">
+		<div class="cursor"></div>
+		<ul class="nav-list">
+			<li class="nav-list-item">导航菜单一</li>
+			<li class="nav-list-item">导航菜单二</li>
+			<li class="nav-list-item">导航菜单三</li>
+			<li class="nav-list-item">导航菜单四</li>
+			<li class="nav-list-item">导航菜单五</li>
+			<li class="nav-list-item">导航菜单六</li>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript" src="../../base/base.js"></script>
+<script type="text/javascript" src="js/nav.js"></script>
+<script type="text/javascript">
+	window.onload = function (){
+		var oNav = byId('nav1'),
+			aLi = byClass('nav-list-item', oNav),
+			oCursor = byClass('cursor', oNav)[0],
+			originLeft = css(oCursor, 'left');
+		
+		for (var i=0,l=aLi.length; i<l; i++) {
+			(function(c){
+				var oW = css(aLi[0], 'width');
+				aLi[c].onmouseover = function (){
+					buffer(oCursor, {left : c * oW});
+				};
+				aLi[c].onmouseout = function (){
+					buffer(oCursor, {left : originLeft});
+				};
+
+				aLi[c].onclick = function (){
+					alert('选中第 '+(c+1) +' 个导航项');
+				}
+			})(i);
+		}
+	};
+
+</script>
+</html>
