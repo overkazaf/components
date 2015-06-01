@@ -325,7 +325,7 @@ function css(obj, attr, val){
 
 
 /* a tiny animate function */
-function buffer (obj, json, fnDuring, fnEnd){
+function buffer (obj, json, fnDuring, fnEnd, fs){
 	clearInterval(obj.timer);
 	obj.timer = setInterval(function (){
 		var isEnd = true;
@@ -351,7 +351,7 @@ function buffer (obj, json, fnDuring, fnEnd){
 			obj.timer = null;
 			fnEnd && fnEnd.call(obj);
 		}
-	}, 20);
+	}, fs || 20);
 }
 
 function addClass (elem, sClass) {

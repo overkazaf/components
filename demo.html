@@ -15,6 +15,7 @@
 		#menu{height:auto;width:200px;overflow:hidden;position:absolute;left:-200px;top:50px;background-color:#aaf;border-radius: 3px;box-shadow: 0 0 10px #000;}
 		ul.menu-list{width:100%;}
 		ul.menu-list li.menu-item{width:100%;height:64px;line-height: 64px;text-align: center;color:#fff;cursor: pointer;background-color: #444;}
+		ul.menu-list li.menu-item:hover{opacity: 0.8;filter:alpha(opacity:80);}
 	</style>
 </head>
 <body>
@@ -27,17 +28,19 @@
 	<div id="menu" class="menu">
 		<ul class="menu-list">
 			<li class="menu-item" data-type="scroll">轮播图</li>
-			<li class="menu-item">2</li>
+			<li class="menu-item" data-type="dropdown-menu">下拉菜单</li>
 			<li class="menu-item">3</li>
 		</ul>
 
 		<ul class="menu-list">
-			<li class="menu-item">4</li>
-			<li class="menu-item">5</li>
-			<li class="menu-item">6</li>
-			<li class="menu-item">4</li>
-			<li class="menu-item">5</li>
-			<li class="menu-item">6</li>
+			<li class="menu-item" data-type="alert">警告窗口</li>
+			<li class="menu-item" data-type="accordion">折叠菜单</li>
+			<li class="menu-item" data-type="drag">拖拽</li>
+			<li class="menu-item" data-type="resizable">可变大小</li>
+			<li class="menu-item" data-type="dropdown">下拉框</li>
+			<li class="menu-item" data-type="dragsort">拖拽排序</li>
+			<li class="menu-item" data-type="calendar">日历</li>
+			<li class="menu-item" data-type="tree">树</li>
 		</ul>
 	</div>
 </body>
@@ -46,10 +49,15 @@
 
 	var effectsStrategies = {
 		'scroll' : function (){
-			loadModal(new jScroll());
+			loadWindow('scroll');
+		},
+		'dropdown' : function (){
+			loadWindow('dropdown');
 		}
 	};
-
+	function loadWindow (name) {
+		window.open(name + '.html');
+	}
 	addEvent(window, 'load', function (){
 		var oNav = byId('navbar'),
 			aNav = byClass('nav-item', oNav),
@@ -66,14 +74,10 @@
 				});
 			});
 
-			
-			forEach(aMenu, function (j, item){
-				var aLi = byTag('li', item);
-				forEach(aLi, function (i, it){
-					addEvent(it, 'click', function (){
-						var type = it.getAttribute('data-type');
-						effectsStrategies[type]();
-					});
+			var aLi = byClass('menu-item', oMenu);
+			forEach(aLi, function (j, it){
+				addEvent(it, 'click', function (){
+					loadWindow(it.getAttribute('data-type'));
 				});
 			});
 	});

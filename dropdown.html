@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>jDropdown</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style type="text/css">
+	.container{float: left;width:960px;}
+	.jDropdown_container {box-shadow:0 0 10px #aaf;position:relative;float:left;width:240px;height:32px;margin-left:20px;}
+	ul.jDropdown_content {margin:0;padding:0;background: #eef;width:100%;height:auto;}
+	ul.jDropdown_content li{position: relative;text-indent:5px;cursor: pointer;line-height: 32px;border-left:6px solid #09F;}
+	
+	
+	ul.jDropdown_content li:nth-child(2n){border-left:6px solid #FA0;background:#E8E8E8;}
+	ul.jDropdown_content li:nth-child(2n+1){border-left:6px solid #09F;background:#C5C5C5;}
+	ul.jDropdown_content li:hover{background: #2b2b2b;color:#FFF;height:32px;}
+	ul.jDropdown_content li:first-child{background: #EEF;color:#222;height:32px;}
+	li{list-style: none;}
+	.caret{display: inline-block;position: absolute;right:10px;top:50%;margin-top:-4px;
+		background-color:#eef;}
+	.arrow-down{
+		border-left: 8px solid transparent;
+    	border-right: 8px solid transparent;
+    	border-bottom: 8px solid transparent;
+    	border-top: 8px solid #09F;
+	}
+	.arrow-up{
+		margin-top:-10px;
+		border-left: 8px solid transparent;
+    	border-right: 8px solid transparent;
+    	border-top: 8px solid transparent;
+    	border-bottom: 8px solid #09F;
+	}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div id='testDiv1' class="jDropdown_container"></div>
+		<div id='testDiv2' class="jDropdown_container"></div>
+		<div id='testDiv3' class="jDropdown_container"></div>
+	</div>
+</body>
+<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src='js/jDropdown.js'></script>
+<script type="text/javascript">
+	$(function(){
+		var ctx = ['#testDiv1', '#testDiv2', '#testDiv3'];
+		$.each(ctx, function (index,value){
+			var drop = new jDropdown({
+				container : ctx[index],
+				dropdownTitle : 'Testing Dropdown',
+				dropdownData : {
+					async : false,
+					//dummy data
+					items : [
+						{
+							title : 'Item 1',
+							link : "",
+							action : ''
+						},{
+							title : 'Item 2',
+							link : "",
+							action : ''
+						},{
+							title : 'Item 3',
+							link : "",
+							action : ''
+						},
+						{
+							title : 'Item 4',
+							link : "",
+							action : ''
+						},{
+							title : 'Item 5',
+							link : "",
+							action : ''
+						},{
+							title : 'Item 6',
+							link : "",
+							action : ''
+						},
+					]
+				}
+			});
+		});
+	});
+
+</script>
+</html>
