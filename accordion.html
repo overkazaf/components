@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		ul.menu-list{list-style-type: none;width:100%;}
+		ul.menu-list li.menu-list-item{width:98%;line-height:32px;cursor: pointer;height:auto;border-radius: 4px;margin-top:2px;background-color:#ccc;}
+		ul.menu-list li.menu-list-item:hover{background-color:#aaa;}
+		ul.menu-list li.menu-list-item h4{text-align: center;}
+		ul.menu-list li.menu-list-item .content{height:0px;background-color:#eef;position:relative;display:block;border:1px solid #ccc;}
+		ul.menu-list li.menu-list-item .content{display: none;color:#222;font-size:14px;line-height:20px;text-indent: 20px;padding-left:10px;padding-right:10px;}
+		#menu{margin:10px auto;width:320px;height:auto;overflow:hidden;}
+	</style>
+</head>
+
+<body>
+	<div class="menu" id="menu">
+		<ul class="menu-list">
+			<li style="background-color:#09f;color:#fff;" class="menu-list-item">
+				<h4>AngularJS</h4>
+				<div class="content">
+					AngularJS诞生于2009年，由Misko Hevery 等人创建，后为Google所收购。是一款优秀的前端JS框架，已经被用于Google的多款产品当中。AngularJS有着诸多特性，最为核心的是：MVVM、模块化、自动化双向数据绑定、语义化标签、依赖注入、等等。
+				</div>
+			</li>
+			<li style="background-color:#baff00;color:#222;" class="menu-list-item">
+				<h4>Backbone</h4>
+				<div class="content">
+					Backbone.js为复杂WEB应用程序提供模型(models)、集合(collections)、视图(views)的结构。其中模型用于绑定键值数据和自定义事件；集合附有可枚举函数的丰富API； 视图可以声明事件处理函数，并通过RESRful JSON接口连接到应用程序。
+				</div>
+			</li>
+			<li style="background-color:#f40;color:#fff;" class="menu-list-item">
+				<h4>Node</h4>
+				<div class="content"> Node.js是一个基于Chrome JavaScript运行时建立的平台， 用于方便地搭建响应速度快、易于扩展的网络应用。Node.js 使用事件驱动， 非阻塞I/O 模型而得以轻量和高效，非常适合在分布式设备上运行的数据密集型的实时应用。</div>
+			</li>
+			<li style="background-color:#222;color:#fff;" class="menu-list-item">
+				<h4>React</h4>
+				<div class="content">
+					React 通常和其他的 JavaScript 框架同时被提及，但是说“React 对比 Angular”却讲不通，因为它们之间是不可比较的。Angular 是一个完整的框架（包括一个 view 层），React 却并不是。这也是 React 很难于理解的原因，它虽然抽离自一个具备完整框架的生态系统中，但仅仅是一个 view 层。
+				</div>
+			</li>
+		</ul>
+	</div>
+</body>
+<script type="text/javascript" src="base/base.js"></script>
+	<script type="text/javascript" src="js/accordion.js"></script>
+<script type="text/javascript">
+	window.onload = function (){
+		accordion({
+			id : 'menu'
+		});
+	}
+
+</script>
+</html>

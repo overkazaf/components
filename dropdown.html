@@ -11,7 +11,7 @@
 	.container{float: left;width:960px;}
 	.jDropdown_container {box-shadow:0 0 10px #aaf;position:relative;float:left;width:240px;height:32px;margin-left:20px;}
 	ul.jDropdown_content {margin:0;padding:0;background: #eef;width:100%;height:auto;}
-	ul.jDropdown_content li{position: relative;text-indent:5px;cursor: pointer;line-height: 32px;border-left:6px solid #09F;}
+	ul.jDropdown_content li{position: relative;text-indent:5px;cursor: pointer;line-height: 32px;font-family:"微软雅黑";border-left:6px solid #09F;}
 	
 	
 	ul.jDropdown_content li:nth-child(2n){border-left:6px solid #FA0;background:#E8E8E8;}
@@ -42,6 +42,7 @@
 		<div id='testDiv2' class="jDropdown_container"></div>
 		<div id='testDiv3' class="jDropdown_container"></div>
 	</div>
+	<button id="btn">取值</button>
 </body>
 <script type="text/javascript" src="js/jquery/jquery.min.js"></script>
 <script type="text/javascript" src='js/jDropdown.js'></script>
@@ -51,39 +52,46 @@
 		$.each(ctx, function (index,value){
 			var drop = new jDropdown({
 				container : ctx[index],
-				dropdownTitle : 'Testing Dropdown',
+				dropdownTitle : '请选择',
 				dropdownData : {
 					async : false,
 					//dummy data
 					items : [
 						{
-							title : 'Item 1',
+							title : '选项标题一',
 							link : "",
 							action : ''
 						},{
-							title : 'Item 2',
+							title : '选项标题二',
 							link : "",
 							action : ''
 						},{
-							title : 'Item 3',
+							title : '选项标题三',
 							link : "",
 							action : ''
 						},
 						{
-							title : 'Item 4',
+							title : '选项标题四',
 							link : "",
 							action : ''
 						},{
-							title : 'Item 5',
+							title : '选项标题五',
 							link : "",
 							action : ''
 						},{
-							title : 'Item 6',
+							title : '选项标题六',
 							link : "",
 							action : ''
 						},
 					]
 				}
+			});
+		});
+
+		$('#btn').on('click', function (){
+			$('.jDropdown_content').each(function (i){
+				var val = $(this).children().first().find('b').text();
+				alert('下拉框 '+(i+1)+" 选中了"+val);
 			});
 		});
 	});

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+	<script type="text/javascript" src="js/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="johnTab.js"></script>
+	<script type="text/javascript">
+		$(function (){
+			$.fn.jnTab({
+				container : ".tab",
+				menu : ['data', 'data2'],
+				contentUrl : ['./data.html', './data2.html']
+			});
+		});
+	</script>
+	<style type="text/css">
+		.tab-body{
+			min-height: 200px;
+		}
+	</style>
+</head>
+<body>
+	<div class="jumbotron"></div>
+	<div class="container">
+		<div class="col-md-4">
+			<div class="tab">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

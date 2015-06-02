@@ -286,9 +286,11 @@ function forEach(elems, callback){
 function slideToggle (obj) {
 	var tarH = css(obj, 'height');
 	if (tarH === 0) {
-		buffer(obj, {'height': 400});
+		obj.style.display = 'block';
+		buffer(obj, {'height': 180});
 	} else {
-		buffer(obj, {'height': 0});
+		buffer(obj, {'height': 0}, null, function(){obj.style.display = 'none';});
+		
 	}
 }
 function css(obj, attr, val){
