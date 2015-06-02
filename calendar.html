@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	#div1{width:350px;height: auto;overflow:hidden;padding:2px;border:1px solid #ccc;border-radius:10px;box-shadow:0 0 10px #000;margin:0 auto;}
+	.day {background-color:#eee;text-align:center;border:1px solid #eef;box-sizing:border-box;cursor:pointer;float:left;font-family: "Microsoft Yahei";border-radius:10px;}
+	.day:hover {background-color:#aaa;}
+	.week{width:50px;float:left;line-height: 50px;text-align: center;height: 50px;background: #eee;color:#222;font-size:12px;border-radius: 50%;}
+	.active {background-color:#09f !important;}
+	.this-month {background-color:#99ccff;font-weight:bold;color:#222;}
+	.this-month:hover {background-color:#4198ce;}
+
+	.prev-month, .next-month {font-weight:normal;background-color:#ddd;color:#fff;}
+
+	.calender-header{height:50px;width:100%;text-align:center;line-height:50px;}
+	.calender-header .prev, .calender-header .next{width:50px;height:50px;background:#2b2b2b;line-height: 50px;text-align: center;cursor:pointer;}
+	.calender-header .prev{float:left;background:url('prev.png') 10px 10px no-repeat;background-size:30px;}
+	.calender-header .next{float:right;background:url('next.png') 10px 10px no-repeat;background-size:30px;}
+	.calender-header span.today{display: block;float:center;font-size:20px;}
+
+	.calender-body {height:auto;overflow:hidden;width:100%;}
+
+	</style>
+</head>
+<body>
+	<div id="div1"></div>
+</body>
+<script type="text/javascript" src="base/base.js"></script>
+<script type="text/javascript" src="calendar.js"></script>
+<script type="text/javascript">
+	addEvent(window, 'load', function (){
+		var settings = {
+			'id' : 'div1',
+			'OnClick' : function (){
+				alert('click');
+			},
+			'OnDblClick' : function (){
+				alert('dblclick');
+			}
+		};
+		var calendar = new Calendar(settings);
+	});
+</script>
+</html>
