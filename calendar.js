@@ -76,21 +76,6 @@
 				this.month = date['month'],
 				this.day = date['day'];
 
-
-				this.weekDay = getWeekDay(this.year, this.month, this.day);
-				this.firstDate = getWeekDay(this.year, this.month, 1);
-				this.firstDate = this.firstDate < 0 ? this.firstDate += 7 : this.firstDate;
-            	this.finalDate = new Date(this.year, this.month+1, 0).getDate();
-            	this.lastDate = new Date(this.year, this.month, 0).getDate();
-				this.render();
-			},
-			render: function() {
-				forEach(aDivs, function (index, div){
-					div.className = 'day';
-				});
-
-				this.dateText.innerText = '' + (this.year) + '/' + (this.month);
-
 				var prevMonth = this.month-1,
 					prevYear = this.year,
 					nextMonth = this.month+1,
@@ -108,6 +93,27 @@
 				this.prevYear = prevYear;
 				this.nextMonth = nextMonth;
 				this.nextYear = nextYear;
+
+
+				alert(this.month+':' + this.prevMonth + ':' + this.nextMonth);
+				this.weekDay = getWeekDay(this.year, this.month, this.day);
+				this.firstDate = getWeekDay(this.year, this.month, 1);
+				this.firstDate = this.firstDate < 0 ? this.firstDate += 7 : this.firstDate;
+            	this.finalDate = new Date(this.year, this.month+1, 0).getDate();
+            	this.lastDate = new Date(this.year, this.month, 0).getDate();
+				this.render();
+			},
+			render: function() {
+				forEach(aDivs, function (index, div){
+					div.className = 'day';
+				});
+
+				this.dateText.innerText = '' + (this.year) + '/' + (this.month);
+
+				var prevMonth = this.prevMonth,
+					prevYear = this.prevYear,
+					nextMonth = this.nextMonth,
+					nextYear = this.nextYear;
 
 				// render previous month
 				for (var i=this.firstDate-1,k=0; i>=0; i--, k++) {
@@ -141,6 +147,8 @@
 				var _this = this;
 				forEach(_this.thisDays, function (i, elem){
 					removeEvent(elem, 'click');
+				});
+				forEach(_this.thisDays, function (i, elem){
 					addEvent(elem, 'click', function(){
 						var d = elem.getAttribute('data-date');
 						alert('当前日期' + d);
@@ -152,30 +160,29 @@
 				
 				forEach(_this.prevDays, function (i, elem){
 					removeEvent(elem, 'click');
-					addEvent(elem, 'click', function(){
-						var d = elem.getAttribute('data-date');
-						alert(d);
-						var firstDay = getFirstDate(d);
-						_this.refresh(firstDay);
-					});
 				});
 
 				forEach(_this.nextDays, function (i, elem){
 					removeEvent(elem, 'click');
+				});
+
+				forEach(_this.nextDays, function (i, elem){
 					addEvent(elem, 'click', function(){
 						var d = elem.getAttribute('data-date');
-						alert(d);
 						var firstDay = getFirstDate(d);
 						_this.refresh(firstDay);
 					});
 				});
 
+				
+
+				removeEvent(_this.prevBtn,'click');
 				addEvent(_this.prevBtn, 'click', function (){
 					var firstDay =_this.prevYear + '-' + _this.prevMonth + '-1';
-					alert(firstDay);
 					_this.refresh(new Date(firstDay));
 				});
 
+				removeEvent(_this.nextBtn, 'click');
 				addEvent(_this.nextBtn, 'click', function (){
 					var d = new Date(_this.nextYear, _this.nextMonth-1, 1);
 					var firstDay = getFirstDate(d);
