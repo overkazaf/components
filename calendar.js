@@ -95,7 +95,7 @@
 				this.nextYear = nextYear;
 
 
-				alert(this.month+':' + this.prevMonth + ':' + this.nextMonth);
+				//alert(this.month+':' + this.prevMonth + ':' + this.nextMonth);
 				this.weekDay = getWeekDay(this.year, this.month, this.day);
 				this.firstDate = getWeekDay(this.year, this.month, 1);
 				this.firstDate = this.firstDate < 0 ? this.firstDate += 7 : this.firstDate;
