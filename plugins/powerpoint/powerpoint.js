@@ -13,11 +13,12 @@
 			var Powerpoint = {
 				_timer_ : null,
 				page : 1,
+				currentIndex : 0,
 				init : function(){
 					// Small buttons at the bottom
 					this.smallButtons = options.hasSmallButton && ctx.find(options.smallButton.context).find(options.smallButton.className);
 					// Small buttons that can quickly position small btns, only for dom querying
-					this.smallButtonContext = this.smallButtons ? ctx.find(options.smallButton.context).find(options.smallButton.context) : null;
+					this.smallButtonContext = this.smallButtons ? ctx.find(options.smallButton.context) : null;
 
 					// Total counts that need to scroll
 					this.total = this.smallButtons ? this.smallButtons.length : 0;
@@ -50,6 +51,7 @@
 							}
 						});
 						this.listItem.first().show();
+						this.currentIndex = 0;
 					}
 					if(options.hasSmallButton){
 						this.smallButtons.each(function(j, jcont){
@@ -61,23 +63,56 @@
 
 				},
 				bindEvents : function (){
+					var _this_ = this;
 					if(options.hasSmallButton){
-						log(this.smallButtonContext);
 						this.smallButtonContext.on('click', options.smallButton.className, function (){
-							alert($(this).attr('data-index'));
+							var index = $(this).attr('data-index');
+
+							_this_.currentIndex = index;
+							_this_.smallButtons.removeClass('active');
+							$(this).addClass('active');
+							_this_.listItem.fadeOut('slow');
+							_this_.listItem.eq(index).fadeIn('slow');
 						});
-						
 					}
+
+					// ctx.on('mouseover', function (){
+					// 	_this_.listItem.eq(_this_.currentIndex).children(options.titleClass).animate({
+					// 		bottom : 0
+					// 	}, 500);
+					// }).on('mouseout', function(){
+					// 	_this_.listItem.eq(_this_.currentIndex).children(options.titleClass).animate({
+					// 		bottom : '-40px'
+					// 	}, 500);
+					// });
 				},
 				autoPlay : function (){
 					var _this_ = this;
-					_this_._timer_ = setInterval(function (){
-						_this_.page = ((_this_.page + 1) % _this_.total) + 1;
-						_this_.refresh();
-					}, options.interval);
+					var fnAuto = function (){
+						_this_._timer_ = setInterval(function (){
+							++_this_.currentIndex;
+							_this_.currentIndex %= _this_.total;
+							_this_.refresh();
+						}, options.interval);
+					};
+					fnAuto();
+
+					_this_.smallButtonContext.on('mouseover',function (){
+						_this_.stop();
+					}).on('mouseout', function (){
+						fnAuto();
+					});
+				},
+				next : function (){
+					++this.currentIndex;
+					this.currentIndex %= this.total;
+				},
+				stop : function (){
+					clearInterval(this._timer_);
+					this._timer_ = null;
 				},
 				refresh : function (){
-
+					this.smallButtons.eq(this.currentIndex).trigger('click');
 				}
 
 			};
@@ -112,7 +147,7 @@
 		switchSpeed 	: 1000,
 		interval        : 3000,
 		hasTitle        : 1,
-        titleClass      : 'titleClass',
+        titleClass      : '.powerpoint-title',
         titleArray      : []
 	};
 })(jQuery)

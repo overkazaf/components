@@ -13,7 +13,7 @@
 
 		.powerpoint-body {position: relative;}
 		.powerpoint-body .ppt-scroller {
-			width:100%;height:200px;background: #baff00;
+			width:100%;height:200px;background: #fff;
 		}
 		.ppt-scroller>ul{
 			width:100%;height:100%;
@@ -28,7 +28,7 @@
 		}
 
 		.powerpoint-footer>ul{
-			position:absolute;left:50%;top:15px;margin-left:-100px;width:200px;height:10px;text-align: center;line-height: 40px;
+			position:absolute;left:50%;top:15px;margin-left:-100px;width:200px;height:10px;text-align: center;line-height: 20px;
 		}
 
 		.powerpoint-footer>ul>li{
@@ -36,6 +36,9 @@
 		}
 		.powerpoint-footer>ul>li.active{
 			background: #0cf;
+		}
+		.powerpoint-title{
+			position: absolute;bottom:-40px;height:40px;width:100%;background-color: #222;opacity: 0.8;filter:alpha(opacity:80);color:#fff;text-align: center;line-height:40px;font-size:16px;font-family: "Microsoft Yahei";
 		}
 
 	</style>
@@ -46,10 +49,10 @@
 		<div class="powerpoint-body">
 			<div class="ppt-scroller">
 				<ul class="info-list">
-					<li class="info-list-item" style="background:url('1.jpg');"></li>
-					<li class="info-list-item" style="background:url('2.jpg');"></li>
-					<li class="info-list-item" style="background:url('3.jpg');"></li>
-					<li class="info-list-item" style="background:url('4.jpg');"></li>
+					<li class="info-list-item" style="background:url('1.jpg');"><div class="powerpoint-title">这个是新闻标题</div></li>
+					<li class="info-list-item" style="background:url('2.jpg');"><div class="powerpoint-title">这个是新闻标题</div></li>
+					<li class="info-list-item" style="background:url('3.jpg');"><div class="powerpoint-title">这个是新闻标题</div></li>
+					<li class="info-list-item" style="background:url('4.jpg');"><div class="powerpoint-title">这个是新闻标题</div></li>
 				</ul>
 			</div>
 		</div>
