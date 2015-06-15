@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		*{margin:0;padding:0;}
+		ul{list-style-type:none;}
+		ul li{cursor: pointer;}
+		#test{
+			margin:100px auto;width:600px;height:240px;outline: 1px solid #aaa;
+		}
+
+		.powerpoint-body {position: relative;}
+		.powerpoint-body .ppt-scroller {
+			width:100%;height:200px;background: #baff00;
+		}
+		.ppt-scroller>ul{
+			width:100%;height:100%;
+		}
+		.ppt-scroller>ul>li{
+			width:100%;height:100%;
+		}
+
+		.powerpoint-footer{
+			position: relative;
+			width:100%;height:40px;background: #222;
+		}
+
+		.powerpoint-footer>ul{
+			position:absolute;left:50%;top:15px;margin-left:-100px;width:200px;height:10px;text-align: center;line-height: 40px;
+		}
+
+		.powerpoint-footer>ul>li{
+			width:10px;height:10px;float:left;margin-left:4px;background: #04f;border-radius: 50%;box-shadow: 0 0 4px #000;
+		}
+		.powerpoint-footer>ul>li.active{
+			background: #0cf;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="test">
+		<div class="powerpoint-header"></div>
+		<div class="powerpoint-body">
+			<div class="ppt-scroller">
+				<ul class="info-list">
+					<li class="info-list-item" style="background:url('1.jpg');"></li>
+					<li class="info-list-item" style="background:url('2.jpg');"></li>
+					<li class="info-list-item" style="background:url('3.jpg');"></li>
+					<li class="info-list-item" style="background:url('4.jpg');"></li>
+				</ul>
+			</div>
+		</div>
+		<div class="powerpoint-footer">
+			<ul class="page-btn-list">
+				<li class="page-btn active"></li>
+				<li class="page-btn"></li>
+				<li class="page-btn"></li>
+				<li class="page-btn"></li>
+			</ul>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src='jquery-1.11.1.min.js'></script>
+<script type="text/javascript" src="powerpoint.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#test').powerpoint({
+			context : '#test',
+			container : '.ppt-scroller'
+		});
+	});
+</script>
+</html>
