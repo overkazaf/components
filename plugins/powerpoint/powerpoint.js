@@ -1,6 +1,7 @@
+
 ;(function($, undefined){
-	var log = function(s){
-		window.console && window.console.log(s);
+	var log = function(k,v){
+		window.console && (v ? window.console.log(k, v) : window.console.log(k) );
 	};
 
 	$.fn.powerpoint = function(options, data){
