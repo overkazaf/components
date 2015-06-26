@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.popupWin {
+			width:600px;height:240px;border:1px solid #999;border-radius: 5px;box-shadow: 0 0 10px #000;
+			background-color:#fff;z-index:1024;
+		}
+		.popupWin-close{
+			width:24px;height:24px;line-height: 24px;font-size:20px;text-align:center;color:#000;border-radius: 50%;border:3px solid #000;position: absolute;right:-15px;top:-15px;background: #fff;cursor: pointer;box-shadow: 0 0 5px #000;
+		}
+
+		.popupWin-header {
+			width:100%;height:60px;
+		}
+		.popupWin-body{
+			width:100%;height:280px;overflow:hidden;overflow-y:auto;
+		}
+		.popupWin-footer {
+			position:absolute;bottom:2px;width:100%;height:60px;b
+		}
+		.popupWin .row{
+			width:90%;padding:10px;
+		}
+		.popupWin .title{
+			font-size:20px;color:#4fc0e8;font-family: "黑体";margin-left:2px;
+		}
+		.popupWin .popupWin-body textarea{
+			padding:5px;background-color:#f7f8fa;margin-left:40px;font-size:14px;font-family: "黑体";
+		}
+
+		.popupWin .popupWin-body .desc {
+			width:80px;height:204px;text-indent:2px;display:block;margin-left:10px;float:left;
+		}
+		.popupWin .popupWin-body ul.depart-list {
+			position:relative;right:0;margin:0 auto;padding:10px;width:90%;height:auto;overflow:hidden;list-style: none;
+		}
+
+		.popupWin .popupWin-body ul.depart-list li.depart-list-item{
+			width:152px; height:32px;line-height: 32px;margin-left:20px;cursor:pointer;float:left;margin-bottom:10px;
+		}
+		.popupWin .popupWin-body ul.depart-list li.depart-list-item input{cursor:pointer;width:15px;height:15px;}
+		
+		.popupWin .popupWin-body ul.person-list {
+			position:relative;right:0;margin:0 auto;padding:10px;width:90%;height:auto;overflow:hidden;list-style: none;
+		}
+		.popupWin .popupWin-body ul.person-list li.person-list-item{
+			width:112px; height:32px;line-height: 32px;margin-left:20px;cursor:pointer;float:left;margin-bottom:10px;text-align: center;
+		}
+		
+		.popupWin .popupWin-body ul.person-list li.on{
+			background: #eee;
+		}
+
+		.popupWin .popupWin-body ul.person-list li.off{
+			background: #aaf;
+		}
+
+		.popupWin .popupWin-footer button{
+			min-width:80px;width:auto;height:32px;line-height: 32px;text-align: center;color:#fff;background-color: #4fc0e8;border:0;font-size:16px;margin-left:10px;border-radius: 5px;cursor: pointer;font-family: "黑体";
+		}
+		.popupWin .popupWin-footer .btn-orange{
+			background-color: #eaa01d;
+		}
+		.popupWin .popupWin-footer .btn-danger{
+			background-color: #f46b6b;
+		}
+
+	</style>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript" src='jquery-1.11.1.min.js'></script>
+<script type="text/javascript">
+	var  css = function(obj, attr, val){
+		if (arguments.length == 2) {
+			return parseFloat(obj.currentStyle ? obj.currentStyle[attr] : document.defaultView.getComputedStyle(obj, null)[attr]);
+		} else {
+			switch (attr){
+				case 'width':
+				case 'height':
+				case 'padding-left':
+				case 'padding-right':
+				case 'padding-bottom':
+				case 'padding-top':
+					val = Math.max(val, 0);
+				case 'left':
+				case 'top':
+				case 'margin-left':
+				case 'margin-right':
+				case 'margin-top':
+				case 'margin-bottom':
+					obj.style[attr] = val + 'px';
+					break;
+				case 'opacity':
+					obj.style.opacity = val;
+					obj.style.filter = 'alpha(opacity:'+(val*100)+')';
+					break;
+				default : 
+					obj.style[attr] = val;
+			}
+
+			return function (attr_in, attr_val){css(obj, attr_in, attr_val);};
+		}
+	};
+
+	// A simple jQuery based plugin, not refactor yet
+	typeMapper : {
+		// type : url
+	};
+	Popup = {
+		obj : null,
+		$obj : null,
+		$header : null,
+		$body : null,
+		$footer : null,
+		$closeBtn : null,
+		options : {},
+		init : function (options){
+			this.options = options;
+			this.render();
+		},
+		closeWin : function (callback){
+			if(this.$obj){
+				this.$obj.fadeOut().css({
+					'z-index' : -1
+				});
+				callback && $.isFunction(callback) && callback();
+			}
+		},
+		render : function (){
+			var options = this.options;
+			this.obj = this.getPopupInstance();
+			var $obj = this.$obj = $(this.obj);
+			if(options){
+				$obj.css({
+					width : options.width + 'px',
+					height : options.height + 'px',
+					position : 'absolute',
+					'z-index' : 1024,
+					'margin-left' : -options.width/2 + 'px',
+					left : '50%',
+					top : '100px'
+				});
+			}
+			this.$closeBtn = $('<div class="popupWin-close">&times</div>');
+			this.$header = $('<div class="popupWin-header"></div>');
+			this.$body = $('<div class="popupWin-body"></div>');
+			this.$footer = $('<div class="popupWin-footer"></div>');
+			$obj.append(this.$closeBtn);
+			$obj.append(this.$header);
+			$obj.append(this.$body);
+			$obj.append(this.$footer);
+			this.bindEvents();
+
+			var testData = {
+				'id0' : {name : 'test0',status : 0},
+				'id1' : {name : 'test1',status : 0},
+				'id2' : {name : 'test2',status : 1},
+				'id3' : {name : 'test3',status : 1},
+				'id4' : {name : 'test4',status : 0},
+				'id5' : {name : 'test5',status : 0},
+				'id6' : {name : 'test6',status : 1}
+			};
+			//  twyj, hbcs, bld
+			this.renderTemplate(testData, 'twyj');
+		},
+		bindEvents : function (){
+			if (this.$obj) {
+				var $closeBtn = this.$closeBtn;
+				var _this_ = this;
+				$closeBtn.on('click', function (){
+					_this_.closeWin();
+				});
+			}
+		},
+		getPopupInstance : function (){
+			return this.obj || (this.obj = (function(){
+				var div = document.createElement('div');
+				div.className = "popupWin";
+				document.body.appendChild(div);
+				return div;
+			})());
+		},
+		loadData : function (t){
+			var _this_ = this;
+			var url = typeMapper[t];
+			$.ajax({
+				url : url,
+				type : 'POST',
+				dataType : 'json',
+				success : function(data){
+					/*
+						data = {
+							urls : {
+								
+							},
+							list : {
+								id : {
+									name : xxx,
+									status : xxx
+								}
+							}
+						};
+
+					 */
+					_this_.renderTemplate(data, t);
+				}
+			});
+		},
+		renderTemplate : function (json, type){
+			this.$body && this.$body.empty();
+			var template = defaultTemplate[type]();
+			var body = templateStrategies[type](json);
+			this.$header.empty().html(template.header);
+			this.$footer.empty().html(template.footer);
+			this.$body.empty().html(body);
+
+			template['onRenderReady'] && template['onRenderReady']();
+		},
+		refresh : function(){
+
+		}
+	};
+
+	var defaultTemplate = {
+		'hbcs' : function(t){
+			var header = '<div class="row"><span class="title">选择会办处室</span></div>';
+			var footer = '<div class="row"><center><button id="transfer" class="btn-orange">转处室</button><button id="next">下一步</button></center></div>';
+
+
+			return {
+				header : header,
+				footer : footer,
+				onRenderReady : function(){
+
+					//已核转发部领导
+					$('#transfer').on('click', function(){
+						$.ajax({
+							url : '',
+							type : 'POST',
+							data : data,
+							success : function(){
+								
+							}
+						});
+					});
+
+
+					//下一步
+					$('#next').on('click', function(){
+						$.ajax({
+							url : '',
+							type : 'POST',
+							data : data,
+							success : function(){
+								
+							}
+						});
+					});
+
+					// $('ul.depart-list').on('click', 'li', function(){
+					// 	if ($(this).hasClass('on')) {
+					// 		$(this).removeClass('on').addClass('off');
+					// 	} else {
+					// 		$(this).removeClass('off').addClass('on');
+					// 	}
+					// });
+				}
+			};
+		},
+		'bld' : function(){
+			var header = '<div class="row"><span class="title">选择部领导</span></div>';
+			var footer = '<div class="row"><center><button id="confirmSending" class="btn-orange">已核转发部领导</button></center></div>';
+			
+			return {
+				header : header,
+				footer : footer,
+				onRenderReady : function(){
+					$('#confirmSending').on('click', function (){
+						//已核转发部领导发送
+						$.ajax({
+							url : '',
+							type : 'POST',
+							data : data,
+							success : function(){
+								
+							}
+						});
+					});
+
+					$('ul.person-list').on('click', 'li', function(){
+						if ($(this).hasClass('on')) {
+							$(this).removeClass('on').addClass('off');
+						} else {
+							$(this).removeClass('off').addClass('on');
+						}
+					});
+				}
+			};
+		},
+		'twyj' : function (){
+			var header = '<div class="row"><span class="title">退文意见</span></div>';
+			var footer = '<div class="row"><center><button id="confirmRevert" class="btn-danger">确定退文</button></center></div>';
+
+			return {
+				header : header,
+				footer : footer,
+				onRenderReady : function(){
+					$('#confirmSending').on('click', function (){
+						//已核转发部领导发送
+						$.ajax({
+							url : '',
+							type : 'POST',
+							data : data,
+							success : function(){
+								
+							}
+						});
+					});
+
+					$('ul.person-list').on('click', 'li', function(){
+						if ($(this).hasClass('on')) {
+							$(this).removeClass('on').addClass('off');
+						} else {
+							$(this).removeClass('off').addClass('on');
+						}
+					});
+				}
+			};
+		}
+	};
+
+	var templateStrategies = {
+		// type / renderFn
+		'hbcs' : function (json){
+			var statusString = '';
+			//var html = '<span class="desc">内部流转:</span>'
+			var html = '';
+			html += '<ul class="depart-list">';
+			for (var id in json){
+				statusString = json[id]['status'] ? 'checked' : '';
+				var spanCheck = '<span><input type="checkbox" name="chkbox" '+statusString+'></span>';
+				var spanText = '<span>'+json[id]['name']+'</span>';
+				html += '<li class="depart-list-item" data-id="'+id+'">'+ spanCheck + spanText +'</li>'
+			}
+			html += '</ul>';
+
+			html += '<div class="row"><textarea cols="70" rows="3" id="textArea">填写会办意见</textarea></div>';
+			return html;
+
+		},
+		'bld' : function(json){
+			var statusString = '';
+			//var html = '<span class="desc">内部流转:</span>'
+			var html = '';
+			html += '<ul class="person-list">';
+			for (var id in json){
+				statusString = json[id]['status'] ? 'on' : 'off';
+				html += '<li class="person-list-item '+statusString+'" data-id="'+id+'">'+json[id]['name']+'</li>'
+			}
+			html += '</ul>';
+
+			//html += '<div class="row"><textarea cols="68" rows="3" id="textArea"></textarea></div>';
+			return html;
+		},
+		'twyj' : function(){
+			var html = '';
+
+			html += '<div class="row"><textarea cols="68" rows="12" id="textArea"></textarea></div>'
+			return html;
+		}
+	};
+</script>
+<script type="text/javascript">
+	window.onload = function (){
+		Popup.init({
+			width : 600,
+			height : 420
+		});
+	}
+
+</script>
+</html>
