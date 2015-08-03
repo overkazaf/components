@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.container {width:800px;margin:20px auto;}
+		.scroll-img {width:100%;padding:10px 0 10px 0;overflow:hidden;position: relative;height:120px;}
+		.scroll-img ul{list-style:none;margin:0;padding:0;width:100%;position: absolute;left:0;top:0;height:100%;}
+		.scroll-img ul li{float:left;width:12.5%;background:#aaa;height:100%;}
+		.scroll-img ul li:nth-child(5n){background-color: #ff0;}
+		.scroll-img ul li:nth-child(5n-1){background-color: #0ff;}
+		.scroll-img ul li:nth-child(5n-2){background-color: #f0f;}
+		.scroll-img ul li:nth-child(5n-3){background-color: #aff;}
+		.scroll-img ul li:nth-child(5n-4){background-color: #afa;}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="scroll-img">
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+</div>
+
+
+<div class="container">
+	<div class="scroll-img">
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+</div>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>	
+<script type="text/javascript">
+	$('.scroll-img').each(function (){
+		var $that = $(this).find('ul');
+		var oW = $that.outerWidth();
+		var $children = $that.find('li').clone();
+		$that.css({
+			width : '200%'
+		}).append($children);
+
+		var oL = 0,
+			step = 1,
+			timer = null;
+
+		var fnScrollLeft = function () {
+			timer = setInterval(function (){
+				oL -= step;
+				$that.css({
+					left : (oL)
+				});
+				if (-oL == oW){
+					oL = 0;
+				}
+			}, 25);
+		};
+
+		var fnStopScroll = function (){
+			clearInterval(timer);
+			timer = null;
+		};
+
+		$(this).on('mouseout', fnScrollLeft);
+		$(this).on('mouseover', fnStopScroll);
+
+		fnScrollLeft();
+	});
+</script>
+</body>
+</html>
