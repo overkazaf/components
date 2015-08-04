@@ -5,40 +5,37 @@
 	<title>Document</title>
 	<style type="text/css">
 		.container {width:800px;margin:20px auto;}
-		.scroll-img {width:100%;padding:10px 0 10px 0;overflow:hidden;position: relative;height:120px;}
-		.scroll-img ul{list-style:none;margin:0;padding:0;width:100%;position: absolute;left:0;top:0;height:100%;}
-		.scroll-img ul li{float:left;width:12.5%;background:#aaa;height:100%;}
-		.scroll-img ul li:nth-child(5n){background-color: #ff0;}
-		.scroll-img ul li:nth-child(5n-1){background-color: #0ff;}
-		.scroll-img ul li:nth-child(5n-2){background-color: #f0f;}
-		.scroll-img ul li:nth-child(5n-3){background-color: #aff;}
-		.scroll-img ul li:nth-child(5n-4){background-color: #afa;}
+		.scroll-img {width:100%;padding:5px 0 5px 0;overflow:hidden;position: relative;height:120px;}
+		.scroll-img ul.scroll-list{list-style:none;margin:0;padding:0;width:100%;position: absolute;left:0;top:0;height:100%;}
+		.scroll-img ul.scroll-list li{cursor:pointer;float:left;width:10%;height:100%;text-align: center;}
+		.scroll-img ul.scroll-list li img{max-width:90%;vertical-align: middle;}
+		.scroll-img ul.scroll-list li .placeholder {width:90%;height:90%;margin:0 auto;background-color: #4198ce;}
 	</style>
 </head>
 <body>
 <div class="container">
 	<div class="scroll-img">
-		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+		<ul class="scroll-list" desc="contentShow">
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
 		</ul>
 	</div>
 </div>
 
 
-<div class="container">
-	<div class="scroll-img">
-		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-		</ul>
-	</div>
-</div>
 <script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>	
 <script type="text/javascript">
 	$('.scroll-img').each(function (){
