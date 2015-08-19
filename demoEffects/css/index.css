@@ -1,0 +1,461 @@
+@charset utf-8;
+* {margin:0;padding:0;}
+html, body {width:100%;height:100%;overflow:hidden;}
+.bd {
+	position:fixed;
+	left:0;top:0;
+	width:100%;height:100%;
+}
+
+.logo {
+	position:fixed;
+	left:100px;top:30px;
+	width : 240px;
+	height:72px;
+	background:url('../images/logo.png') center no-repeat;
+	background-size: 100%;
+}
+.container {
+	width : 500px;
+	margin : 100px auto;
+	perspective: 2200px;
+	-webkit-perspective: 2200px;
+}
+
+.container .menu-list{
+	margin:0;padding:0;list-style:none;
+	position:relative;
+	left:50%;
+	margin-left:-280px;
+	top:180px;
+
+	perspective: 1000px;
+	-webkit-perspective: 1000px;
+	z-index:9;
+}
+
+.container .slogan {
+	position:relative;
+	width : 300px;
+	left : 360px;
+	top: 280px;
+	perspective: 400px;
+	-webkit-perspective: 400px;
+}
+
+.slogan .well-txt1,
+.slogan .well-txt2{
+	font-size:30px;
+	color:#fff;
+	font-family:"Microsoft Yahei";
+	cursor:pointer;
+	transform:rotateY(-45deg);
+	-webkit-transform:rotateY(-45deg);
+}
+
+.slogan .well-txt2{
+	margin-left:-60px;
+	font-size:36px;
+}
+
+.menu-list .menu-item{
+	position:absolute;
+	width : 140px;
+	height : 70px;
+	border-radius:5px;
+	cursor:pointer;
+	box-shadow: 7px 4px 1px #ddf;
+	opacity:0.8;
+	filter:alpha(opacity=80);
+	background-size:cover !important;
+	transition: all 0.5s ease-in-out;
+	-webkit-transition: all 0.5s ease-in-out;
+
+	transform : rotateY(-35deg) rotateZ(-5deg);
+	-webkit-transform : rotateY(-35deg) rotateZ(-5deg);
+}
+
+.menu-list .menu-item:nth-child(2n+1):hover {
+	z-index:9;
+	-webkit-transform : rotateY(0) translate(120px, -20px) rotateZ(360deg) scale(1.2);	
+}
+
+.menu-list .menu-item:nth-child(2n):hover {
+	z-index:9;
+	-webkit-transform : rotateY(0) translate(-120px, -20px) rotateZ(360deg) scale(1.2);	
+}
+
+.menu1 {
+	left : 120px;
+	top:60px;
+	background:url('../images/cydh.png') center no-repeat !important;
+	z-index:9;
+	
+	animation-delay: 3s;
+	-webkit-animation-delay: 3s;
+	animation : target1 2s;
+	-webkit-animation : target1 2s;
+}
+
+.menu2 {
+	left : 140px;
+	top:20px;
+	background:url('../images/tch.png') center no-repeat !important;
+	z-index:8;
+	
+	animation-delay: 3.5s;
+	-webkit-animation-delay: 3.5s;
+	animation : target2 4s;
+	-webkit-animation : target2 4s;
+}
+
+.menu3 {
+	left : 220px;
+	top:30px;
+	background:url('../images/zckj.png') center no-repeat !important;
+	z-index:7;
+	
+	animation-delay: 4s;
+	-webkit-animation-delay: 4s;
+	animation : target3 4.5s;
+	-webkit-animation : target3 4.5s;
+}
+
+.menu4 {
+	left : 230px;
+	top:-36px;
+	background:url('../images/cxyz.png') center no-repeat !important;
+	z-index:6;
+
+	animation-delay: 4.5s;
+	-webkit-animation-delay: 4.5s;
+	animation : target4 4.5s;
+	-webkit-animation : target4 4.5s;
+}
+
+.menu5 {
+	left : 320px;
+	top:-35px;
+	background:url('../images/zxfb.png') center no-repeat !important;
+	z-index:5;
+
+	animation-delay: 5s;
+	-webkit-animation-delay: 5s;
+	animation : target5 4.5s;
+	-webkit-animation : target5 4.5s;
+}
+
+.menu6 {
+	left : 380px;
+	top:-80px;
+	background:url('../images/jhnt.png') center no-repeat !important;
+	z-index:4;
+
+	animation-delay: 5.5s;
+	-webkit-animation-delay: 5.5s;
+	animation : target6 4.5s;
+	-webkit-animation : target6 4.5s;
+}
+
+.menu7 {
+	left : 420px;
+	top:-120px;
+	background:url('../images/cxb.png') center no-repeat !important;
+	z-index:3;
+
+	animation-delay: 6s;
+	-webkit-animation-delay: 6s;
+	animation : target7 4.5s;
+	-webkit-animation : target7 4.5s;
+}
+
+.menu8 {
+	left : 460px;
+	top:-150px;
+	background:url('../images/scfw.png') center no-repeat !important;
+	z-index:3;
+
+	animation-delay: 6.5s;
+	-webkit-animation-delay: 6.5s;
+	animation : target8 4.5s;
+	-webkit-animation : target8 4.5s;
+}
+
+.menu9 {
+	left : 500px;
+	top:-180px;
+	background:url('../images/cxdt.png') center no-repeat !important;
+	z-index:3;
+
+	animation-delay: 7s;
+	-webkit-animation-delay: 7s;
+	animation : target9 4.5s;
+	-webkit-animation : target9 4.5s;
+}
+
+@-webkit-keyframes target1{
+	0%{
+		left:0;
+		top:-200px;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	50%{
+		left:-80px;
+		top:0px;
+	}
+
+	100%{
+		left:120px;
+		top:60px;
+	}
+}
+
+@-webkit-keyframes target2{
+	0%{
+		top:-200px;
+		left:0;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:-60px;
+		top:20px;
+	}
+
+	100%{
+		left:140px;
+		top:20px;
+	}
+}
+
+@-webkit-keyframes target3{
+	0%{
+		top:-200px;
+		left:0;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:420px;
+		top:30px;
+	}
+
+	100%{
+		left:220px;
+		top:30px;
+	}
+}
+
+@-webkit-keyframes target4{
+	0%{
+		left:0;
+		top:-200px;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:30px;
+		top:-30px;
+	}
+
+	100%{
+		left:230px;
+		top:-36px;
+
+	}
+}
+
+@-webkit-keyframes target5{
+	0%{
+		left:0;
+		top:-200px;
+	}
+	
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:520px;
+		top:-30px;
+	}
+
+	100%{
+		left:320px;
+		top:-35px;
+	}
+}
+
+@-webkit-keyframes target6{
+	0%{
+		left:0;
+		top:-200px;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:180px;
+		top:-50px;
+	}
+
+	100%{
+		left:380px;
+		top:-80px;
+	}
+}
+
+@-webkit-keyframes target7{
+	0%{
+		left:0;
+		top:-200px;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:620px;
+		top:-100px;
+	}
+
+	100%{
+		left:420px;
+		top:-120px;
+	}
+}
+
+@-webkit-keyframes target8{
+	0%{
+		left:0;
+		top:-200px;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:260px;
+		top:-120px;
+	}
+
+	100%{
+		left:460px;
+		top:-150px;
+	}
+}
+
+@-webkit-keyframes target9{
+	0%{
+		left:0;
+		top:-200px;
+	}
+
+	25%{
+		left:0;
+		top:-100px;
+	}
+
+	35% {
+		left:120px;
+		top:60px;
+	}
+
+	50%{
+		left:700px;
+		top:-160px;
+	}
+
+	100%{
+		left:500px;
+		top:-180px;
+	}
+}
+
+
+@-webkit-keyframes shuffle{
+	0%{
+		transform: rotateZ(-2deg);
+	}
+
+	50% {
+		transform : rotateZ(5deg);
+	}
+
+	100% {
+		transform : rotateZ(-2deg);
+	}
+}
+
+.aside{
+	position:fixed;
+	right:0;
+	top:10px;
+}
+
+.aside .tookit{
+	width:40px;height:420px;
+	background:url('../images/tookit.png') center no-repeat;
+	background-size:100%;
+	cursor:pointer;
+}
