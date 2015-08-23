@@ -1,0 +1,247 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" href="/cynt/mobile-web/assets/i/favicon.png">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="/cynt/mobile-web/assets/i/app-icon72x72@2x.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content=""/>
+    <link rel="apple-touch-icon-precomposed" href="/cynt/mobile-web/assets/i/app-icon72x72@2x.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/cynt/mobile-web/assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <link rel="stylesheet" href="/cynt/mobile-web/css/amazeui.min.css">
+    <link rel="stylesheet" href="/cynt/mobile-web/css/mobile.css"></head>
+<body class="sub-list">
+<div class="query-conditions">
+    <a href="">总站</a>
+    <a href="">海安县</a>
+    <a href="">如皋市</a>
+    <a href="">如东县</a>
+    <a href="">海门市</a>
+    <a href="">启东市</a>
+    <a href="">崇川区</a>
+    <a href="">港闸区</a>
+    <a href="">开发区</a>
+    <a href="">通州区</a>
+    <a href="">高新区</a>
+    <a href="">滨海园区</a>
+    <a href="">苏通科技产业园</a>
+</div>
+
+<div class="zone-list">
+</div>
+
+</body>
+<script src="/cynt/mobile-web/js/jquery.min.js"></script>
+<script type="text/javascript">
+    var 
+        dq = '',
+        gDefaultImg = '/cynt/images/default/225-160.png';
+
+    $(function (){
+        initPosition();
+        initDropdown();
+    });
+
+    function initPosition(){
+        var oH = $('.query-conditions').height();
+        $('.zone-list').css({
+            'position' : 'absolute',
+            'width' : '100%',
+            'top' : oH + 10
+        });
+    }
+
+    function initDropdown () {
+        $('.query-conditions').on('click', 'a', function (ev){
+            dq = $(this).text();
+            $(this).addClass('active').siblings().removeClass('active');
+            fakePagination();
+            ev.preventDefault();
+        });
+
+        $('.query-conditions').find('a').first().trigger('click');
+    }
+
+    function fakePagination(){
+        var $ctx = $('.zone-list');
+        getData($ctx, 'cynt,jbxx', function (json1){
+            getData2($ctx, 'cynt,fhq', function (json2){
+                var wholeJSON = mergeJSON(json1, json2);
+                renderContents($ctx, wholeJSON);
+            });
+        });
+    }
+
+    function renderContents ($ctx, json) {
+        $ctx.empty();
+        if (json['msgList'] && json['msgList'].length) {
+            var 
+                list = json['msgList'],
+                fragment = '';
+            $.each(list, function (i, item){
+                var 
+                    headImg     = item['headimg'],
+                    headImg     = headImg == null ? gDefaultImg : headImg,
+                    digest      = item['jj'],
+                    moreUrl     = item['htmlpath'],
+                    zckjlx      = item['zckjlx'],
+                    ssdq        = item['ssdq'],
+                    ssyz        = item['ssyz'],
+                    zckjzmj     = item['zckjzmj'],
+                    txdz        = item['txdz'],
+                    zzzjorfhzj  = item['zzzjorfhzj'],
+                    title       = item['msgtitle'],
+                    // 孵化器字段
+                    fhqlx       = item['fhqlx'],
+                    fhqsyzmj    = item['fhqsyzmj'],
+                    fhqdz       = item['fhqdz'],
+                    ssyz        = item['ssyz'],
+                    title       = item['msgtitle'];
+                
+                    if (fhqlx) {
+                        fragment += '<div class="item">' +
+                                        '<div class="pic">' +
+                                            '<img src="'+ headImg +'" alt="">' +
+                                            '<a href="'+ moreUrl +'" class="btn btn-primary btn-block">查看详情</a>' +
+                                        '</div>' +
+                                        '<div class="cnt">' +
+                                            '<h6 class="title">' +
+                                                '<a href="'+ moreUrl +'"> '+ title +'</a>' +
+                                            '</h6>' +
+                                            '<ul class="info">' +
+                                                '<li>' +
+                                                    '<label>孵化器类型：</label>' +
+                                                    fhqlx +
+                                                '</li>' +
+                                                '<li>' +
+                                                    '<label>所属地区：</label>' +
+                                                    ssyz +
+                                                '</li>' +
+                                                '<li>' +
+                                                    '<label>面积：</label>' +
+                                                    fhqsyzmj +
+                                                '</li>' +
+                                                '<li>' +
+                                                    '<label>地址：</label>' +
+                                                    fhqdz +
+                                                '</li>' +
+                                            '</ul>' +
+                                        '</div>' +
+                                    '</div>';
+                    } else {
+                         fragment += '<div class="item">' +
+                                        '<div class="pic">' +
+                                            '<img src="'+ headImg +'" alt="">' +
+                                            '<a href="'+ moreUrl +'" class="btn btn-primary btn-block">查看详情</a>' +
+                                        '</div>' +
+                                        '<div class="cnt">' +
+                                            '<h6 class="title">' +
+                                                '<a href="'+ moreUrl +'"> '+ title +'</a>' +
+                                            '</h6>' +
+                                            '<ul class="info">' +
+                                                '<li>' +
+                                                    '<label>主导产业：</label>' +
+                                                    zckjlx +
+                                                '</li>' +
+                                                '<li>' +
+                                                    '<label>所属地区：</label>' +
+                                                    ssyz +
+                                                '</li>' +
+                                                '<li>' +
+                                                    '<label>面积：</label>' +
+                                                    zckjzmj +
+                                                '</li>' +
+                                                '<li>' +
+                                                    '<label>种子资金：</label>' +
+                                                    zzzjorfhzj +
+                                                '</li>' +
+                                                '<li>' +
+                                                    '<label>地址：</label>' +
+                                                    txdz +
+                                                '</li>' +
+                                            '</ul>' +
+                                        '</div>' +
+                                    '</div>';
+                    }
+            });
+
+            $ctx.html(fragment);
+        } else {
+            $ctx.html('<div style="text-align:center">未搜索到结果</div>');
+        }
+    }
+
+    function getData($ctx, lmxx, callback){
+        $.ajax({ 
+            type: 'POST', 
+            url: '/TrueCMS/messageController/getMessageByCondition.do?', 
+            data: "lmxx=" + lmxx + "&cms_eq_ssyz="+ dq,
+            cache : false,
+            dataType: "json",
+            success:function(data){ 
+                if (data['success'] == true) {
+                    callback && $.isFunction(callback) && callback(data);
+                }
+            }, 
+            error:function(){ 
+                alert("数据加载失败"); 
+            } 
+        }); 
+    }
+
+    function getData2($ctx, lmxx, callback){
+        $.ajax({ 
+            type: 'POST', 
+            url: '/TrueCMS/messageController/getMessageByCondition.do?', 
+            data: "lmxx=" + lmxx + "&cms_eq_ssyz="+ dq ,
+            cache : false,
+            dataType: "json",
+            success:function(data){ 
+                if (data['success'] == true) {
+                    callback && $.isFunction(callback) && callback(data);
+                }
+            }, 
+            error:function(){ 
+                alert("数据加载失败"); 
+            } 
+        }); 
+    }
+
+    function mergeJSON (j1, j2) {
+        var tot = {};
+        tot['totalCount'] = +j1['totalCount'] + +j2['totalCount'];
+        if (j1['msgList'] && j2['msgList']) {
+            tot['msgList'] = $.merge(j1['msgList'], j2['msgList']);
+        } else if (j1['msgList']){
+            tot['msgList'] = j1['msgList'];
+        } else if(j2['msgList']){
+            tot['msgList'] = j2['msgList'];
+        }
+        return tot;
+    }
+
+</script>
+</html>

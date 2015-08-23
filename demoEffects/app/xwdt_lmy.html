@@ -1,0 +1,204 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title></title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content=""/>
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <link rel="stylesheet" href="/cynt/mobile-web/css/amazeui.min.css">
+  <link rel="stylesheet" href="/cynt/mobile-web/css/mobile.css">
+  <script type="text/javascript" src="/cynt/mobile-web/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/cynt/mobile-web/js/include.js"></script>
+</head>
+<body class="sub-list">
+  <div class="news-list-text">
+    <div class="item">
+      <div class="title">
+        <span>[主体活动]</span>
+        <a href="">关于组纪念品通创训练营首赠</a>
+      </div>
+      <p class="desc">
+        当下“云服务模式”的逐渐成型，云计算提供了非常好的应用模式...
+        <a href="">[详细]</a>
+        <span class="date"> <i></i>
+          8-19
+        </span>
+      </p>
+    </div>
+    <div class="item">
+      <div class="title">
+        <span>[主体活动]</span>
+        <a href="">关于组纪念品通创训练营首赠</a>
+      </div>
+      <p class="desc">
+        当下“云服务模式”的逐渐成型，云计算提供了非常好的应用模式...
+        <a href="">[详细]</a>
+        <span class="date"> <i></i>
+          8-19
+        </span>
+      </p>
+    </div>
+    <div class="item">
+      <div class="title">
+        <span>[主体活动]</span>
+        <a href="">关于组纪念品通创训练营首赠</a>
+      </div>
+      <p class="desc">
+        当下“云服务模式”的逐渐成型，云计算提供了非常好的应用模式...
+        <a href="">[详细]</a>
+        <span class="date">
+          <i></i>
+          8-19
+        </span>
+      </p>
+    </div>
+    <div class="item">
+      <div class="title">
+        <span>[主体活动]</span>
+        <a href="">关于组纪念品通创训练营首赠</a>
+      </div>
+      <p class="desc">
+        当下“云服务模式”的逐渐成型，云计算提供了非常好的应用模式...
+        <a href="">[详细]</a>
+        <span class="date">
+          <i></i>
+          8-19
+        </span>
+      </p>
+    </div>
+  </div>
+</body>
+  <script type="text/javascript">
+  
+function GetQueryString(name){
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+function getData($ctx, lmxx, callback){
+    $.ajax({ 
+        type: 'POST', 
+        url: '/TrueCMS/messageController/getMessageByCondition.do?', 
+        data: "lmxx=" + lmxx,
+        cache : false,
+        dataType: "json",
+        success:function(data){ 
+            if (data['success'] == true) {
+                callback && $.isFunction(callback) && callback(data);
+            }
+        }, 
+        error:function(){ 
+            alert("数据加载失败"); 
+        } 
+    }); 
+}
+
+var format = function(time, format){ 
+  var t = new Date(time); 
+  var tf = function(i){return (i < 10 ? '0' : '') + i}; 
+  return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a){ 
+      switch(a){ 
+            case 'yyyy': 
+              return tf(t.getFullYear()); 
+            break; 
+            case 'MM': 
+              return tf(t.getMonth() + 1); 
+            break; 
+            case 'mm': 
+              return tf(t.getMinutes()); 
+            break; 
+            case 'dd': 
+              return tf(t.getDate()); 
+            break; 
+            case 'HH': 
+              return tf(t.getHours()); 
+            break; 
+            case 'ss': 
+              return tf(t.getSeconds()); 
+            break; 
+          }; 
+      }); 
+  };
+
+function renderContents ($ctx, json) {
+  $ctx.empty();
+  if (json && json['msgList']) {
+    var 
+        fragment = '',
+        list = json['msgList'];
+
+        $.each(list, function (i, item){
+            var 
+                lx = item['lx'],
+                title = item['msgtitle'],
+                digest = item['jj'],
+                time = format(item['releasetime']['time'], 'yyyy-MM-dd'),
+                moreUrl = item['htmlpath'];
+
+
+                if (digest) {
+                  digest = digest.length > 100 ? digest.substring(0, 100) + '...' : digest;
+                }
+
+            fragment += '<div class="item">' +
+                          '<div class="title">' +
+                            '<span>['+ lx +']</span>' +
+                            '<a href="'+ moreUrl +'">'+ title +'</a>' +
+                          '</div>' +
+                          '<p class="desc">' +
+                            digest +
+                            '<a href="'+ moreUrl +'">[详细]</a>' +
+                            '<span class="date">' +
+                              '<i></i>' +
+                               time +
+                            '</span>' +
+                          '</p>' +
+                        '</div>';
+        });
+
+        $ctx.html(fragment);
+
+  } else {
+    $ctx.html('<div style="text-align:center;">未查询到数据</div>');
+  }
+}
+$(function (){
+  var 
+      lm = GetQueryString('lm'),
+      lmxx = 'cynt,' + lm,
+      $ctx = $('.news-list-text');
+
+  getData($ctx, lmxx, function (json){
+      renderContents($ctx, json);
+  });
+
+})
+</script>
+</html>

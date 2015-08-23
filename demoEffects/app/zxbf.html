@@ -1,0 +1,204 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title></title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content=""/>
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <link rel="stylesheet" href="/cynt/mobile-web/css/amazeui.min.css">
+  <link rel="stylesheet" href="/cynt/mobile-web/css/mobile.css">
+  <script type="text/javascript" src="/cynt/mobile-web/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/cynt/mobile-web/js/include.js"></script>   
+</head>
+<body class="sub-list">
+<div class="wrap news-list-primary">
+    <div class="hd">
+        <span class="square"></span>
+        <span class="square"></span>
+        新闻动态
+        <a href="" class="more">更多</a>
+    </div>
+    <div class="bd">
+    <@cmsAlllist lmxx="cynt,fbxwdt" count="1" hasImg="1">
+	    <#list messageMap as nr>
+		<#if (nr_index < 1)>
+        <div class="news-slide">
+            <a href="${nr.msgAll.htmlPath!''}" title="${nr.msgAll.msgTitle!''}" target="_blank">
+                <img src="${nr.msgAll.headImg!'/cynt/images/default/225-160.png'}" onerror="unfind();" alt=""/>
+                <span>
+                    <#if ((nr.msgAll.msgTitle)!'')?length lt 12> ${(nr.msgAll.msgTitle)!''}<#else> ${((nr.msgAll.msgTitle)!'')?substring(0,12)}...</#if>
+                </span>
+            </a>
+        </div>
+		</#if>
+		</#list>                   
+    </@cmsAlllist>		
+        <ul class="list-desc">
+    <@cmsAlllist lmxx="cynt,fbxwdt" count="3">
+	    <#list messageMap as nr>
+            <#if (nr_index > 0)>		
+            <li class="item">
+                <div class="title">
+                    <span>[${nr.msgAllMap.lx!''}]</span>
+                    <a href="${nr.msgAll.htmlPath!''}" title="${nr.msgAll.msgTitle!''}" target="_blank"><#if ((nr.msgAll.msgTitle)!'')?length lt 10> ${(nr.msgAll.msgTitle)!''}<#else> ${((nr.msgAll.msgTitle)!'')?substring(0,10)}...</#if></a>
+                </div>
+                <p class="desc">
+                    <#if ((nr.msgAllMap.jj)!'')?length lt 35> ${(nr.msgAllMap.jj)!''}<#else> ${((nr.msgAllMap.jj)!'')?substring(0,35)}...</#if>
+                    <a href="${nr.msgAll.htmlPath!''}" target="_blank">[详细]</a>
+                </p>
+            </li>
+		    </#if>
+		</#list>                   
+    </@cmsAlllist>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="wrap news-list-secondary">
+    <div class="hd">
+        <span class="square"></span>
+        <span class="square"></span>
+        政策动态
+        <a href="" class="more">更多</a>
+    </div>
+    <div class="bd">
+        <ul class="list-title">
+            <@cmsAlllist lmxx="cynt,zxzcjd" count="3">
+	            <#list messageMap as nr>		
+            <li class="item">
+                <a href="${nr.msgAll.htmlPath!''}" target="_blank"><#if ((nr.msgAll.msgTitle)!'')?length lt 12> ${(nr.msgAll.msgTitle)!''}<#else> ${((nr.msgAll.msgTitle)!'')?substring(0,12)}...</#if></a>
+            </li>
+		         </#list>                   
+            </@cmsAlllist>
+        </ul>
+    </div>
+</div>
+
+<div class="wrap news-list-primary">
+    <div class="hd">
+        <span class="square"></span>
+        <span class="square"></span>
+        项目申报通知
+        <a href="" class="more">更多</a>
+    </div>
+    <div class="bd">
+        <ul class="list-desc">
+            <@cmsAlllist lmxx="cynt,xmsbtz" count="3">
+	            <#list messageMap as nr>		
+            <li class="item">
+                <div class="title">
+                    <a href="${nr.msgAll.htmlPath!''}" title="${nr.msgAll.msgTitle!''}" target="_blank"><#if ((nr.msgAll.msgTitle)!'')?length lt 12> ${(nr.msgAll.msgTitle)!''}<#else> ${((nr.msgAll.msgTitle)!'')?substring(0,12)}...</#if></a>
+                </div>
+                <p class="desc">
+                    <#if ((nr.msgAllMap.jj)!'')?length lt 35> ${(nr.msgAllMap.jj)!''}<#else> ${((nr.msgAllMap.jj)!'')?substring(0,35)}...</#if>
+                    <a href="${nr.msgAll.htmlPath!''}" target="_blank">[详细]</a>
+                </p>
+            </li>
+		         </#list>                   
+            </@cmsAlllist>
+        </ul>
+    </div>
+</div>
+
+
+
+
+<div class="wrap news-list-secondary">
+    <div class="hd">
+        <span class="square"></span>
+        <span class="square"></span>
+        企业技术难题
+        <a href="" class="more">更多</a>
+    </div>
+    <div class="bd">
+        <ul class="list-title">
+            <@cmsAlllist lmxx="cynt,xyhqyjsnt" count="3">
+	            <#list messageMap as nr>		
+            <li class="item">
+                <span>[${nr.msgAllMap.cyfl!''}]</span><a href="${nr.msgAll.htmlPath!''}" title="${nr.msgAll.msgTitle!''}" target="_blank"><#if ((nr.msgAll.msgTitle)!'')?length lt 12> ${(nr.msgAll.msgTitle)!''}<#else> ${((nr.msgAll.msgTitle)!'')?substring(0,12)}...</#if></a>
+            </li>
+		         </#list>                   
+            </@cmsAlllist>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="wrap news-list-primary">
+    <div class="hd">
+        <span class="square"></span>
+        <span class="square"></span>
+        企业融资需求
+        <a href="" class="more">更多</a>
+    </div>
+    <div class="bd">
+        <ul class="list-desc">
+            <@cmsAlllist lmxx="cynt,qyrzxq" count="3">
+	            <#list messageMap as nr>		
+            <li class="item">
+                <div class="title">
+                    <a href="${nr.msgAll.htmlPath!''}" target="_blank"><#if ((nr.msgAll.msgTitle)!'')?length lt 12> ${(nr.msgAll.msgTitle)!''}<#else> ${((nr.msgAll.msgTitle)!'')?substring(0,12)}...</#if></a>
+                </div>
+                <p class="desc">
+                    <#if ((nr.msgAllMap.jj)!'')?length lt 35> ${(nr.msgAllMap.jj)!''}<#else> ${((nr.msgAllMap.jj)!'')?substring(0,35)}...</#if><a href="${nr.msgAll.htmlPath!''}" target="_blank">[详细]</a>
+                </p>
+            </li>
+		         </#list>                   
+            </@cmsAlllist>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="wrap news-list-secondary">
+    <div class="hd">
+        <span class="square"></span>
+        <span class="square"></span>
+        科技成果转让
+        <a href="" class="more">更多</a>
+    </div>
+    <div class="bd">
+        <ul class="list-title">
+            <@cmsAlllist lmxx="cynt,zxkjcgzr" count="3">
+	            <#list messageMap as nr>		
+            <li class="item">
+                <a href="${nr.msgAll.htmlPath!''}" target="_blank"><#if ((nr.msgAll.msgTitle)!'')?length lt 12> ${(nr.msgAll.msgTitle)!''}<#else> ${((nr.msgAll.msgTitle)!'')?substring(0,12)}...</#if></a>
+            </li>
+		         </#list>                   
+            </@cmsAlllist>			
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
