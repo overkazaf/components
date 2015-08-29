@@ -1,0 +1,173 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="icon" type="image/png" href="/cynt/mobile-web/assets/i/favicon.png">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="/cynt/mobile-web/assets/i/app-icon72x72@2x.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content=""/>
+    <link rel="apple-touch-icon-precomposed" href="/cynt/mobile-web/assets/i/app-icon72x72@2x.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/cynt/mobile-web/assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+
+    <link rel="stylesheet" href="/cynt/mobile-web/css/amazeui.min.css">
+    <link rel="stylesheet" href="/cynt/mobile-web/css/mobile.css"></head>
+<body class="sub-list">
+<div class="query-conditions">
+    <div class="condition-list">
+        <center>请选择团队、企业类型</center>
+        <a href="javascript:return false;" data-value="创客、创业团队">创客、创业团队</a>
+        <a href="javascript:return false;" data-value="创业企业">创业企业</a>
+        <a href="javascript:return false;" data-value="科技型中小企业">科技型中小企业</a>
+        <a href="javascript:return false;" data-value="高新技术企业">高新技术企业</a>
+        <a href="javascript:return false;" data-value="其他">其他</a>
+    </div>
+    <hr>
+    <div class="condition-list">
+        <center>请选择政策类型</center>
+        <a href="javascript:return false;" data-value="科技政策">科技政策</a>
+        <a href="javascript:return false;" data-value="人才政策">人才政策</a>
+        <a href="javascript:return false;" data-value="财税政策">财税政策</a>
+        <a href="javascript:return false;" data-value="金融政策">金融政策</a>
+        <a href="javascript:return false;" data-value="其它政策">其它政策</a>
+    </div>
+</div>
+
+<div class="zone-list">
+</div>
+
+</body>
+<script src="/cynt/mobile-web/js/jquery.min.js"></script>
+<script type="text/javascript">
+    var 
+        param1 = '',
+        param2 = '',
+        gDefaultImg = '/cynt/images/default/225-160.png';
+
+    $(function (){
+        initPosition();
+        initDropdown();
+    });
+
+    function initPosition(){
+        var oH = $('.query-conditions').height();
+        $('.zone-list').css({
+            'position' : 'absolute',
+            'width' : '100%',
+            'top' : oH + 10
+        });
+    }
+
+    function initDropdown () {
+        $('.query-conditions').on('click', 'a', function (ev){
+            var list = $(this).closest('.condition-list');
+            var index = list.index();
+            $(this).addClass('active').siblings().removeClass('active');
+
+            if (index){
+                param2 = $(this).attr('data-value');
+            } else {
+                param1 = $(this).attr('data-value');
+            }
+
+            
+            fakePagination();
+            ev.preventDefault();
+
+            return false;
+        });
+
+    }
+
+    function fakePagination(){
+        var $ctx = $('.zone-list');
+        getData($ctx, 'cynt,cyzc', function (json1){
+             renderContents($ctx, json1);
+        });
+    }
+
+    function renderContents ($ctx, json) {
+        $ctx.empty();
+        if (json['msgList'] && json['msgList'].length) {
+            var 
+                list = json['msgList'],
+                fragment = '';
+            $.each(list, function (i, item){
+                var 
+                    headImg     = item['headimg'],
+                    headImg     = headImg == null ? gDefaultImg : headImg,
+                    digest      = item['jj'],
+                    moreUrl     = item['htmlpath'],
+                    title       = item['msgtitle'];
+                
+                    if (digest) {
+                        digest = digest.length > 50 ? digest.substring(0, 51)+'...' : digest;
+                    }
+                   
+                    fragment += '<div class="item am-cf">' +
+                                    '<div class="pic">' +
+                                        '<img src="'+ headImg +'" alt="">' +
+                                        '<a href="'+ moreUrl +'" class="btn btn-primary btn-block">查看详情</a>' +
+                                    '</div>' +
+                                    '<div class="cnt">' +
+                                        '<h6 class="title">' +
+                                            '<a href="'+ moreUrl +'"> '+ title +'</a>' +
+                                        '</h6>' +
+                                        '<ul class="info">' +
+                                            '<li>' +
+                                                digest +
+                                            '</li>' +
+                                        '</ul>' +
+                                    '</div>' +
+                                '</div>';
+            });
+
+            $ctx.html(fragment);
+        } else {
+            $ctx.html('<div style="text-align:center">未搜索到结果</div>');
+        }
+    }
+
+    function getData($ctx, lmxx, callback){
+        $.ajax({ 
+            type: 'POST', 
+            url: '/TrueCMS/messageController/getMessageByCondition.do?', 
+            data: "lmxx=" + lmxx + "&cms_like_shtd="+ param1 + "&cms_like_zclx=" + param2 ,
+            cache : false,
+            dataType: "json",
+            success:function(data){ 
+                if (data['success'] == true) {
+                    callback && $.isFunction(callback) && callback(data);
+                }
+            }, 
+            error:function(){ 
+                alert("数据加载失败"); 
+            } 
+        }); 
+    }
+
+
+
+</script>
+</html>

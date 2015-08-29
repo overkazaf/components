@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>强大的jQuery动画库插件snabbt.js-demo:Sticks_jQuery之家-自由分享jQuery、html5、css3的插件库</title>
+  <link href='http://fonts.useso.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+
+  <style>
+    body {
+      -webkit-perspective: 2000px;
+    }
+    a{color: #101524;text-decoration: none;}
+    h1 {
+      text-align: center;
+      font-size: 3em;
+    }
+    #c1, #c2 {
+      position: absolute;
+    }
+    .stick {
+      position: absolute;
+      width: 50px;
+      height: 5px;
+      border-radius: 5px;
+    }
+    .center{text-align: center;}
+      .container a{display: inline-block;margin: 0.5em;padding: 0.6em 1em;border: 3px solid #101524;font-weight: 700;}
+      .container a:hover{opacity: 0.6;}
+      .container a.current{background:#101524;color: #fff; }
+  </style>
+</head>
+<body>
+  <h1 id="heading">200 DOM elements</h1>
+  <div id="c1">
+  </div>
+  <div id="c2">
+  </div>
+  <div class="container center">
+    <a href="index.html" >Cards</a>
+    <a href="sticks.html" class="current">Crazy sticks</a>
+  </div>
+  <div class="center">
+    <p>更多精彩内容请关注：<a href="http://www.htmleaf.com/" target="_blank">jQuery之家</a></p>
+  </div>
+
+  <script src="js/randomColor.js"></script>
+  <script src="js/fpsmeter.min.js"></script>
+  <script src="js/snabbt.min.js"></script>
+  <script type="text/javascript" src="js/sticks.js"></script>
+  <script type="text/javascript">
+    init();
+  </script>
+</body>
+</html>
+

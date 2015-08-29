@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div class="container">
+		<input type="text">
+		<button>Send</button>
+	</div>
+	
+</body>
+<script type="text/javascript" src="socketio.js"></script>
+<script type="text/javascript">
+	window.onload = function (){
+		var logger = getInstance(function (){
+			var div = document.createELement('div');
+			div.id = 'logger';
+			return document.body.appendChild(div);
+		});
+
+		var getInstance = function (f){
+			var instance;
+			return function (){
+				return instance || f.apply(f, arguments);
+			}
+		};
+	}
+
+</script>
+</html>

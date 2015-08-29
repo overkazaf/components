@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.container {width:800px;margin:20px auto;}
+		.scroll-img {width:100%;padding:5px 0 5px 0;overflow:hidden;position: relative;height:120px;}
+		.scroll-img ul.scroll-list{list-style:none;margin:0;padding:0;width:100%;position: absolute;left:0;top:0;height:100%;}
+		.scroll-img ul.scroll-list li{cursor:pointer;float:left;width:10%;height:100%;text-align: center;}
+		.scroll-img ul.scroll-list li img{max-width:90%;vertical-align: middle;}
+		.scroll-img ul.scroll-list li .placeholder {width:90%;height:90%;margin:0 auto;background-color: #4198ce;}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="scroll-img">
+		<ul class="scroll-list" desc="contentShow">
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
+			<li>
+				<div class="placeholder"></div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>	
+<script type="text/javascript">
+	$('.scroll-img').each(function (){
+		var $that = $(this).find('ul');
+		var oW = $that.outerWidth();
+		var $children = $that.find('li').clone();
+		$that.css({
+			width : '200%'
+		}).append($children);
+
+		var oL = 0,
+			step = 1,
+			timer = null;
+
+		var fnScrollLeft = function () {
+			timer = setInterval(function (){
+				oL -= step;
+				$that.css({
+					left : (oL)
+				});
+				if (-oL == oW){
+					oL = 0;
+				}
+			}, 25);
+		};
+
+		var fnStopScroll = function (){
+			clearInterval(timer);
+			timer = null;
+		};
+
+		$(this).on('mouseout', fnScrollLeft);
+		$(this).on('mouseover', fnStopScroll);
+
+		fnScrollLeft();
+	});
+</script>
+</body>
+</html>

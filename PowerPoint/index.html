@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.container{
+			margin : 100px auto;
+			width : 700px;
+		}
+		.powerpoint {
+			position: relative;
+		}
+		
+		.powerpoint .mask{
+			height : 100%;
+			position:relative;
+			overflow:hidden;
+			margin : 0 auto;
+		}
+
+		.powerpoint .mask ul {
+			position:absolute;
+			left : 0;
+			top : 0;
+			margin : 0;padding:0;
+			list-style-type:none;
+			height : 100%; width : 100%;
+		}
+		.powerpoint .mask ul li{
+			float:left;
+			width:100%;height : 100%;
+			background:#aaf;
+		}
+
+		.powerpoint .mask ul li img{
+			width : 100%;
+			border:0;
+		}
+		
+		.powerpoint .btn{
+			position : absolute;
+			width : 40px;height:40px;
+			top:50%;
+			margin-top:-20px;
+			cursor:pointer;
+			line-height:40px;
+			text-align:center;
+			background:#09f;
+			color:#fff;
+			opacity:0.8;
+			filter:alpha(opacity=80);
+			border-radius:4px;
+		}
+
+		.powerpoint .btn:hover{
+			opacity:1;
+			filter:alpha(opacity=100);
+		}
+
+		.powerpoint .btn-prev{
+			left :0px;
+		}
+
+		.powerpoint .btn-next{
+			right :0px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="powerpoint">
+			<div class="mask">
+				<ul>
+					<@cmslist hasImg="1" lmxx="站点简称,栏目简称" count="数量" order="1">
+						<#list messageMap as nr>
+							<li>
+								<a href="${nr.msgAll.headImg!''}" target="_blank">
+									<img src="${nr.msgAll.headImg!''}"  />
+								</a>
+							</li>
+						</#list>
+					</@cmslist>
+				</ul>
+			</div>
+			<div class="btn btn-prev">&lt;</div>
+			<div class="btn btn-next">&gt;</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+;(function ($){
+	$.fn.johnPPT = function (op){
+		return $(this).each(function (){
+			var 
+				opt = $.extend({}, $.fn.johnPPT.defaults, op || {}),
+				$ul = $(opt.list),
+				$aLi = $ul.find(opt.listItem),
+				$mask = $(this).find(opt.maskClass),
+				$container = $(this),
+				total = $aLi.length,
+				oW = opt.width,
+				oH = opt.height,
+				$prev = $(this).find(opt.prev),
+				$next = $(this).find(opt.next),
+				btnW = $prev.width(),
+				current = 0;
+
+			var fnInit = function (){
+				var btnCss = {
+					'width' : opt.btnSize,
+					'height' : opt.btnSize,
+					'line-height' : opt.btnSize + 'px',
+					'margin-top' : -(opt.btnSize/2),
+					'background-color' : opt.btnBgColor,
+					'color' : opt.btnColor
+				};
+
+				$prev.css(btnCss);
+				$next.css(btnCss);
+
+				$container.css({
+					width : +oW + btnW,
+					height : oH
+				});
+				$mask.css({
+					width : oW,
+					height : oH
+				});
+
+
+				$ul.css({
+					width : oW * total
+				});
+
+				$aLi.each(function (){
+					$(this).css({
+						width : oW
+					}).find('img').css({
+						width : oW,
+						height : oH
+					});
+				});
+			};
+
+			var fnBind = function (){
+				$prev.click(function (){
+					if (current > 0) {
+						$ul.animate({
+							left : -(--current) * oW
+						}, opt.interval, opt.effect);
+					}
+				});
+
+				$next.click(function (){
+					if (current < total - 1){
+						$ul.animate({
+							left : -(++current) * oW
+						}, opt.interval, opt.effect);
+					}
+				});
+			};
+
+			fnInit();
+			fnBind();
+			
+		});
+	};
+
+	$.fn.johnPPT.defaults = {
+		container : '.powerpoint',
+		maskClass : '.mask',
+		list      : '.mask>ul',
+		listItem  : 'li',
+		height    : 600,
+		width     : 400,
+		interval  : 1000,
+		prev      : '.btn-prev',
+		next      : '.btn-next',
+		btnSize   : 35,
+		btnBgColor: '#222',
+		btnColor  : '#fff',
+		autoStart : !1, // 是否自动开始
+		effect    : 'swing' // or linear
+	};
+})(jQuery);
+</script>
+<script type="text/javascript">
+	$(function (){
+
+		$('.powerpoint').johnPPT({
+			width    : 400, // 图片宽度
+			height   : 200, // 图片高度
+			btnSize   : 40, // 按钮大小
+			btnBgColor: '#222', //按钮背景
+			btnColor: '#fff' // 按钮字体颜色
+		});
+	});
+</script>
+</html>
