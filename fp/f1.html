@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		window.onload = function () {
+			var a = '1,4,2,3,5,6,7,8,23'.split(',');
+			var compose = function(f, g) {
+				return function(x) {
+					return f(g(x));
+				};
+			};
+			var head = function (x) {return x[0];};
+			var reverse = function (xs) {
+				return xs.reduce(function (pre, cur) {
+				return [cur].concat(pre);
+			}, []);};
+
+			var last = compose(head, reverse);
+			log(last(a));
+			
+		};
+
+		
+		function log (str){
+			var oLog = getLogger();
+			oLog.innerHTML += str + '<br />';
+		}
+
+		function getLogger () {
+			return document.getElementById('log');
+		}
+	</script>
+</head>
+<body>
+	<pre id="log"></pre>
+</body>
+</html>
